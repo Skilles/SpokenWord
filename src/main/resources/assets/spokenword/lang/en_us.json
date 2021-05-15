@@ -1,0 +1,7 @@
+{
+  "text.autoconfig.spokenword.title": "Spoken Word configuration page",
+  "text.autoconfig.spokenword.option.textList": "Messages",
+  "text.autoconfig.spokenword.option.enabled": "Enabled",
+  "text.autoconfig.spokenword.option.pvp": "PvP Mode",
+  "text.autoconfig.spokenword.option.pvp.@Tooltip": "If enabled, will only send if killed by a player"
+}
