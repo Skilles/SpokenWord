@@ -15,9 +15,10 @@ public class SpokenWord implements ClientModInitializer, ModMenuApi {
 	public static ModConfig configData;
 	public static final String MOD_ID = "spokenword";
 
-	public static void sendMessages() {
+	public static void sendMessages(String playerName) {
 		assert MinecraftClient.getInstance().player != null;
 		for (String message: configData.textList) {
+			message = message.replaceAll("%p", playerName);
 			MinecraftClient.getInstance().player.networkHandler.sendPacket(
 					new ChatMessageC2SPacket(message)
 			);

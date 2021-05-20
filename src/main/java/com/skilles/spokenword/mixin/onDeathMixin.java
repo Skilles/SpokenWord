@@ -1,5 +1,8 @@
 package com.skilles.spokenword.mixin;
 
+import com.skilles.spokenword.ModConfig;
+import com.skilles.spokenword.SpokenWord;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,8 +19,8 @@ public abstract class onDeathMixin {
 	@Inject(method = "handleStatus(B)V",
 			at = @At(value = "HEAD"))
 	private void onDeathInject(byte status, CallbackInfo ci) {
-		if(configData.enabled && status == 3 && !sent) {
-			sendMessages();
+		if(configData.death && configData.enabled && status == 3 && !sent) {
+			sendMessages(MinecraftClient.getInstance().player.getDisplayName().asString());
 			sent = true; // precaution for 3rd party server ticks
 		} else if(status == 28) {
 			sent = false;
