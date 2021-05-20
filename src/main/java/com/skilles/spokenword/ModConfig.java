@@ -13,6 +13,7 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean death = true;
     @ConfigEntry.Gui.Tooltip
-    public boolean join = false;
-    public List<String> textList = Arrays.asList("/sethome");
+    public boolean join = true;
+    public List<String> deathList = Arrays.asList("/sethome");
+    public List<String> joinList = Arrays.asList("Welcome %p!");
 }
