@@ -1,6 +1,7 @@
 {
   "text.autoconfig.spokenword.title": "Spoken Word configuration page",
-  "text.autoconfig.spokenword.option.textList": "Messages",
+  "text.autoconfig.spokenword.option.deathList": "Death Messages",
+  "text.autoconfig.spokenword.option.joinList": "Join Messages",
   "text.autoconfig.spokenword.option.enabled": "Global Enabled",
   "text.autoconfig.spokenword.option.join": "Join Mode",
   "text.autoconfig.spokenword.option.join.@Tooltip": "Will send when a player joins",

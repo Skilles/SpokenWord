@@ -14,6 +14,7 @@ import net.minecraft.network.MessageType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,8 +35,10 @@ public class ChatHudMixin {
         if(configData.join && configData.enabled && message instanceof TranslatableText) {
             TranslatableText tMessage = (TranslatableText) message;
             if (tMessage.getKey().contains("multiplayer.player.joined")) {
-                String playerName = ((LiteralText) tMessage.getArgs()[0]).asString();
-                SpokenWord.sendMessages(playerName);
+                String playerName = ((LiteralText) tMessage.getArgs()[0]).getString();
+                String currentPlayer = MinecraftClient.getInstance().player.getDisplayName().getString();
+                if(!playerName.equalsIgnoreCase(currentPlayer) && !message.asString().contains(currentPlayer))
+                    SpokenWord.sendMessages(playerName, configData.joinList);
             }
         }
     }

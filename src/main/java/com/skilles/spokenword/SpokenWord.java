@@ -10,14 +10,16 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 
+import java.util.List;
+
 @Environment(EnvType.CLIENT)
 public class SpokenWord implements ClientModInitializer, ModMenuApi {
 	public static ModConfig configData;
 	public static final String MOD_ID = "spokenword";
 
-	public static void sendMessages(String playerName) {
+	public static void sendMessages(String playerName, List<String> messageList) {
 		assert MinecraftClient.getInstance().player != null;
-		for (String message: configData.textList) {
+		for (String message: messageList) {
 			message = message.replaceAll("%p", playerName);
 			MinecraftClient.getInstance().player.networkHandler.sendPacket(
 					new ChatMessageC2SPacket(message)
