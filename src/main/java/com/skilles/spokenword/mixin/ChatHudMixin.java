@@ -32,7 +32,7 @@ import static com.skilles.spokenword.SpokenWord.configData;
 public class ChatHudMixin {
     @Inject(method = "onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V", at = @At(value = "HEAD"))
     void inject(MessageType messageType, Text message, UUID senderUuid, CallbackInfo ci) {
-        if(configData.join && configData.enabled && message instanceof TranslatableText) {
+        if(configData.modes.join && configData.enabled && message instanceof TranslatableText) {
             TranslatableText tMessage = (TranslatableText) message;
             if (tMessage.getKey().contains("multiplayer.player.joined")) {
                 String playerName = ((LiteralText) tMessage.getArgs()[0]).getString();

@@ -6,8 +6,9 @@
   "mixins": [
   ],
   "client": [
+    "ChatHudMixin",
     "onDeathMixin",
-    "ChatHudMixin"
+    "NetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
