@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.skilles.spokenword.SpokenWord.configData;
 import static com.skilles.spokenword.SpokenWord.sendMessages;
-
+// TODO: replace with NetworkHandlerMixin
 @Mixin(ClientPlayerEntity.class)
 public abstract class onDeathMixin {
 	boolean sent;
@@ -17,8 +17,8 @@ public abstract class onDeathMixin {
 	@Inject(method = "handleStatus(B)V",
 			at = @At(value = "HEAD"))
 	private void onDeathInject(byte status, CallbackInfo ci) {
-		if(configData.death && configData.enabled && status == 3 && !sent) {
-			sendMessages(MinecraftClient.getInstance().player.getDisplayName().getString(), configData.deathList);
+		if(configData.modes.death && configData.enabled && status == 3 && !sent) {
+			sendMessages(configData.deathList);
 			sent = true; // precaution for 3rd party server ticks
 		} else if(status == 28) {
 			sent = false;
