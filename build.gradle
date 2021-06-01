@@ -37,13 +37,14 @@ dependencies {
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
+	include "me.zeroeightsix:fiber:${project.fiber_version}"
+	implementation "me.zeroeightsix:fiber:${project.fiber_version}"
 	include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"
 	//mixin annotation processor
 	annotationProcessor "net.fabricmc:fabric-mixin-compile-extensions:0.4.3"
 
 	// modmenu integration
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-	include "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

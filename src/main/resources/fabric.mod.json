@@ -19,7 +19,9 @@
   "environment": "*",
   "entrypoints": {
     "client": ["com.skilles.spokenword.SpokenWord"],
-    "modmenu": ["com.skilles.spokenword.SpokenWord"]
+    "modmenu": [
+      "com.skilles.spokenword.config.ModMenuIntegration"
+    ]
   },
   "mixins": [
     "modid.mixins.json"

@@ -7,8 +7,12 @@
   ],
   "client": [
     "ChatHudMixin",
-    "onDeathMixin",
-    "NetworkHandlerMixin"
+    "ClientPlayerInteractionMixin",
+    "EntityMixin",
+    "LivingEntityMixin",
+    "NetworkHandlerMixin",
+    "ResetMixin",
+    "QuitMixin"
   ],
   "injectors": {
     "defaultRequire": 1
