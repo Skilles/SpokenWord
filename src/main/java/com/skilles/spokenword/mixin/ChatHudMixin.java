@@ -45,9 +45,6 @@ public class ChatHudMixin {
                     } else if (chatConfig().onMessage && tMessage.getKey().equals("commands.message.display.incoming")) {
                         if (!playerName.equalsIgnoreCase(currentPlayer) && Util.containsCriteria(currentPlayer, tMessage, MESSAGE_LIST))
                             sendMessages(playerName, MESSAGE_LIST);
-                    } else {
-                        log(messageType);
-                        log(message);
                     }
                 } catch (ClassCastException e){
                     log(Level.ERROR, "NULL attacker");

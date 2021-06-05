@@ -29,7 +29,9 @@ public class ConfigUtil {
     public static List<String> tempHostileEntityList = new ArrayList<>();
 
     public static void initEntities() {
+        tempAllEntityList.clear();
         tempAllEntityList.addAll(deathGroup.entityDeathList);
+        tempHostileEntityList.clear();
         tempHostileEntityList.addAll(deathGroup.entityKillList);
         log("Entities initialized: " + tempAllEntityList);
     }
@@ -39,7 +41,7 @@ public class ConfigUtil {
                 .setDefaultValue(defaultValue)
                 .setTooltip(new TranslatableText("config.spokenword.mode."+name+".tooltip"));
     }
-    public static @NotNull DropdownBoxEntry<String> getEntitySelector(String name, String string, ListModes mode, ConfigEntryBuilder entryBuilder) {
+    public static DropdownBoxEntry<String> getEntitySelector(String name, String string, ListModes mode, ConfigEntryBuilder entryBuilder) {
         String entityList = mode.equals(ListModes.ALL) ? listToString(deathGroup.entityDeathList) : listToString(deathGroup.entityKillList);
         return entryBuilder.startDropdownMenu(new TranslatableText("config.spokenword.list."+name), entityList, ConfigUtil::stringFunction, new EntitySelectorCreator(mode))
                 .setSelections(modeToList(mode))
@@ -91,7 +93,6 @@ public class ConfigUtil {
         }
     }
     public static boolean containsEntity(Entity entity, ListModes mode) {
-        //String name = entity.getDisplayName().getString();
         EntityType<?> entityType = entity.getType();
         return getList(mode).stream().findFirst().filter(type -> Objects.requireNonNull(EntityTypes.fromString(type)).getType().equals(entityType)).isPresent();
     }

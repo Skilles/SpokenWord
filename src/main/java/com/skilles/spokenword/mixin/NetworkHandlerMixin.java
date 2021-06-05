@@ -1,6 +1,5 @@
 package com.skilles.spokenword.mixin;
 
-import com.skilles.spokenword.util.ConfigUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -11,6 +10,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.CombatEventS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,9 +20,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.skilles.spokenword.SpokenWord.*;
+import static com.skilles.spokenword.SpokenWord.log;
 import static com.skilles.spokenword.config.ConfigManager.*;
-import static com.skilles.spokenword.util.ConfigUtil.*;
+import static com.skilles.spokenword.util.ConfigUtil.ListModes;
+import static com.skilles.spokenword.util.ConfigUtil.containsEntity;
 import static com.skilles.spokenword.util.Util.*;
 
 /**
@@ -55,7 +56,7 @@ public class NetworkHandlerMixin {
                     sendMessages(attacker.getDisplayName().getString(), PVP_LIST);
                 }
             } else {
-                sendMessages(world.getEntityById(packet.entityId), PVE_LIST);
+                sendMessages(new TranslatableText("selectWorld.world"), PVE_LIST);
             }
         }
     }

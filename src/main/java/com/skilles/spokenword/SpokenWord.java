@@ -20,6 +20,7 @@ import java.util.Map;
 public class SpokenWord implements ClientModInitializer {
 
 	public static Logger LOGGER = LogManager.getLogger();
+
 	public static void log(Level level, String message) {
 		LOGGER.log(level, "[SpokenWord] "+message);
 	}
@@ -32,11 +33,6 @@ public class SpokenWord implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		/*ConfigManager.registerConfig();
-		ConfigManager.loadConfig();
-		AutoConfig.getConfigHolder(ModConfig.class).registerSaveListener((manager, data) -> {
-			return ActionResult.SUCCESS;
-		});*/
 		ModConfig.loadModConfig();
 		ConfigUtil.initEntities();
 	}
