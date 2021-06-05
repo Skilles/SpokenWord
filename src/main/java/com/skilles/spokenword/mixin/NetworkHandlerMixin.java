@@ -1,7 +1,5 @@
 package com.skilles.spokenword.mixin;
 
-import com.skilles.spokenword.util.ConfigUtil;
-import com.skilles.spokenword.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -10,10 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.EndCombatS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
@@ -25,9 +20,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.skilles.spokenword.SpokenWord.*;
+import static com.skilles.spokenword.SpokenWord.log;
 import static com.skilles.spokenword.config.ConfigManager.*;
-import static com.skilles.spokenword.util.ConfigUtil.*;
+import static com.skilles.spokenword.util.ConfigUtil.ListModes;
+import static com.skilles.spokenword.util.ConfigUtil.containsEntity;
 import static com.skilles.spokenword.util.Util.*;
 
 /**
@@ -35,6 +31,7 @@ import static com.skilles.spokenword.util.Util.*;
  */
 @Mixin(ClientPlayNetworkHandler.class)
 public class NetworkHandlerMixin {
+    @Final
     @Shadow private MinecraftClient client;
 
     @Shadow private ClientWorld world;
@@ -49,7 +46,6 @@ public class NetworkHandlerMixin {
     private void onDeathMessage(DeathMessageS2CPacket packet, CallbackInfo ci) {
         if(globalEnabled() && modeConfig().death) {
             assert MinecraftClient.getInstance().world != null;
-            ClientWorld world = MinecraftClient.getInstance().world;
             Entity attacker = world.getEntityById(packet.getKillerId());
             if(attacker != null) {
                 if(attacker instanceof MobEntity && deathConfig().pve) {
@@ -59,10 +55,10 @@ public class NetworkHandlerMixin {
                         log("Add mob: " + attacker.getType().getName().getString());
                     }
                 } else if(attacker instanceof PlayerEntity && deathConfig().pvp) {
-                    sendMessages(new TranslatableText("selectWorld.world"), PVP_LIST);
+                    sendMessages(attacker.getDisplayName().getString(), PVP_LIST);
                 }
             } else {
-                sendMessages("The World", PVP_LIST);
+                sendMessages(new TranslatableText("selectWorld.world"), PVP_LIST);
             }
         }
     }

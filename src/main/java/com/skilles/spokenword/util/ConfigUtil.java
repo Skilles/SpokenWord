@@ -93,7 +93,6 @@ public class ConfigUtil {
         }
     }
     public static boolean containsEntity(Entity entity, ListModes mode) {
-        //String name = entity.getDisplayName().getString();
         EntityType<?> entityType = entity.getType();
         return getList(mode).stream().findFirst().filter(type -> Objects.requireNonNull(EntityTypes.fromString(type)).getType().equals(entityType)).isPresent();
     }

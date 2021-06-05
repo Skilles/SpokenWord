@@ -3,6 +3,7 @@ package com.skilles.spokenword.config;
 import com.skilles.spokenword.util.ConfigUtil;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -20,7 +21,7 @@ import static com.skilles.spokenword.util.ConfigUtil.*;
  * Custom implementation of selection list
  */
 public class EntitySelectorCreator extends DropdownBoxEntry.DefaultSelectionCellCreator<String> {
-    ListModes mode;
+    private final ListModes mode;
     public EntitySelectorCreator(ListModes mode) {
         super();
         this.mode = mode;
@@ -37,7 +38,7 @@ public class EntitySelectorCreator extends DropdownBoxEntry.DefaultSelectionCell
     }
 }
 class EntitySelectionElement<R> extends DropdownBoxEntry.DefaultSelectionCellElement<R> {
-    ListModes mode;
+    private final ListModes mode;
     public EntitySelectionElement(R r, Function<R, Text> toTextFunction, ListModes mode) {
         super(r, toTextFunction);
         this.mode = mode;
@@ -49,6 +50,12 @@ class EntitySelectionElement<R> extends DropdownBoxEntry.DefaultSelectionCellEle
     @Override
     public @Nullable Text getSearchKey() {
         return null;
+    }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, int x, int y, int width, int height, float delta) {
+        setTempList(stringToList((String) this.getEntry().getSelectionElement().getTopRenderer().getValue()), mode);
+        super.render(matrices, mouseX, mouseY, x, y, width, height, delta);
     }
 
     @Override
