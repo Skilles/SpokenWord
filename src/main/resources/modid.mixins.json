@@ -1,12 +1,18 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "com.skilles.spokenword.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "ChatHudMixin",
+    "ClientPlayerInteractionMixin",
+    "EntityMixin",
+    "LivingEntityMixin",
+    "NetworkHandlerMixin",
+    "QuitMixin",
+    "ResetMixin"
   ],
   "injectors": {
     "defaultRequire": 1

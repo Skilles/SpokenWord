@@ -31,6 +31,8 @@ public class ConfigScreen {
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
+        initEntities();
+
         ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("config.spokenword.category.general"));
 
         general.addEntry(getBooleanEntry("globalenable", generalGroup.globalEnable, true, entryBuilder)
