@@ -31,26 +31,25 @@ public class ConfigScreen {
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
+        initEntities();
+
         ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("config.spokenword.category.general"));
 
         general.addEntry(getBooleanEntry("globalenable", generalGroup.globalEnable, true, entryBuilder)
                 .setSaveConsumer((value) -> { generalGroup.globalEnable = value; })
-                .build()
-        );
+                .build());
         general.addEntry(getBooleanEntry("respawn", generalGroup.respawn, false, entryBuilder)
                 .setTooltip(Optional.of(new Text[]{
                         new TranslatableText("config.spokenword.mode.respawn.tooltip1"),
                         new TranslatableText("config.spokenword.mode.respawn.tooltip2").formatted(Formatting.RED)}))
                 .setSaveConsumer((value) -> { generalGroup.respawn = value; })
-                .build()
-        );
+                .build());
 
         ConfigCategory modes = builder.getOrCreateCategory(new TranslatableText("config.spokenword.category.modes"));
 
         modes.addEntry(getBooleanEntry("playerjoin", modeGroup.playerjoin, true, entryBuilder)
                 .setSaveConsumer((value) -> { modeGroup.playerjoin = value; })
-                .build()
-        );
+                .build());
         modes.addEntry(getBooleanEntry("death", modeGroup.death, true, entryBuilder)
                 .setSaveConsumer((value) -> { modeGroup.death = value; })
                 .build());

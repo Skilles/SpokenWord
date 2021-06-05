@@ -29,8 +29,7 @@ public class ChatHudMixin {
     @Inject(method = "onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V", at = @At(value = "HEAD"))
     void inject(MessageType messageType, Text message, UUID senderUuid, CallbackInfo ci) {
         if(globalEnabled()) {
-            if (message instanceof TranslatableText) {
-                TranslatableText tMessage = (TranslatableText) message;
+            if (message instanceof TranslatableText tMessage) {
                 try {
                     String playerName = ((LiteralText) tMessage.getArgs()[0]).getString();
                     String currentPlayer = MinecraftClient.getInstance().player.getDisplayName().getString();
@@ -45,9 +44,6 @@ public class ChatHudMixin {
                     } else if (chatConfig().onMessage && tMessage.getKey().equals("commands.message.display.incoming")) {
                         if (!playerName.equalsIgnoreCase(currentPlayer) && Util.containsCriteria(currentPlayer, tMessage, MESSAGE_LIST))
                             sendMessages(playerName, MESSAGE_LIST);
-                    } else {
-                        log(messageType);
-                        log(message);
                     }
                 } catch (ClassCastException e){
                     log(Level.ERROR, "NULL attacker");

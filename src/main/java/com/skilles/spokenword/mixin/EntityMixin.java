@@ -5,12 +5,21 @@ import com.skilles.spokenword.util.ConfigUtil;
 import com.skilles.spokenword.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.recipebook.ClientRecipeBook;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.stat.StatHandler;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,10 +52,14 @@ public abstract class EntityMixin extends LivingEntity {
     }
 }
 /**
- * Modes: 'On Owned', 'Mob Dies'
+ * Modes: 'On Owned', 'Mob Dies', TODO: 'Death'
  */
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends Entity {
+
+    @Shadow @Nullable public abstract LivingEntity getAttacker();
+
+    @Shadow @Nullable private LivingEntity attacker;
 
     protected LivingEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -54,14 +67,11 @@ abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onDeath", at = @At(value = "TAIL"))
     private void onEntityDeath(DamageSource source, CallbackInfo ci) {
-        if(world.isClient()) {
+        if(world.isClient() && globalEnabled()) {
             if(modeConfig().onOwnedDeath && this.hasCustomName()) {
                 sendMessages(this, OWNED_DEATH_LIST);
             } else if(modeConfig().onEntityDeath && (deathConfig().entityDeathList.contains("ANY") || containsEntity(this, ConfigUtil.ListModes.ALL))) {
                 sendMessages(this, ENTITY_DEATH_LIST);
-            } else {
-                typesToAdd.add(this.getType());
-                log(typesToAdd);
             }
         }
     }

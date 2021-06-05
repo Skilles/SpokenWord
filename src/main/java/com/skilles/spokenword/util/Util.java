@@ -45,10 +45,23 @@ public class Util {
         String messageString = message.getString();
         return getCriteria(list).stream().anyMatch(criteria -> messageString.contains(criteria.replace("%p", playerName)));
     }
+    private static void requestRespawn() {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        assert player != null;
+        if(autoRespawn()) player.requestRespawn();
+    }
+    // TODO: merge with Entity sendMessages
     public static void sendMessages(String playerName, Identifier id) {
         assert MinecraftClient.getInstance().player != null;
         List<String> list = getList(id);
         list.stream().map(message -> message.replaceAll("%p", playerName)).forEachOrdered(message -> MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(message)));
+        requestRespawn();
+    }
+    public static void sendMessages(Text text, Identifier id) {
+        assert MinecraftClient.getInstance().player != null;
+        List<String> list = getList(id);
+        list.stream().map(message -> message.replaceAll("%p", text.getString()).replaceAll("%e", text.getString())).forEachOrdered(message -> MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(message)));
+        requestRespawn();
     }
     public static void sendMessages(BlockState state, Identifier id) {
         assert MinecraftClient.getInstance().player != null;
@@ -56,15 +69,14 @@ public class Util {
         list.stream().map(message -> message.replaceAll("%b", state.getBlock().getName().getString())).forEachOrdered(message -> MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(message)));
     }
     public static void sendMessages(Entity entity, Identifier id) {
-        assert MinecraftClient.getInstance().player != null;
         List<String> list = getList(id);
         list.stream().map(message -> Matcher.quoteReplacement(message).replaceAll("\\%e", entity.getDisplayName().getString())).forEachOrdered(message -> MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(message)));
+        requestRespawn();
     }
     public static void sendMessages(Identifier id) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         List<String> list = getList(id);
         assert player != null;
         list.stream().map(message -> message.replaceAll("%p", player.getDisplayName().getString()).replaceAll("%s", player.getBlockPos().toShortString())).map(ChatMessageC2SPacket::new).forEachOrdered(player.networkHandler::sendPacket);
-        if(autoRespawn()) player.requestRespawn();
     }
 }

@@ -12,15 +12,13 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -45,21 +43,25 @@ abstract class QuitMixin extends Screen {
     @Shadow
     protected Text noTranslated;
 
+    @Final
+    @Mutable
+    @Shadow
+    private List<ButtonWidget> field_33808;
+
     protected QuitMixin(Text title) {
         super(title);
     }
 
-    @Inject(method = "init()V", at = @At(value = "TAIL"))
+    @Inject(method = "method_37051(I)V", at = @At(value = "TAIL"))
     private void quitInject(CallbackInfo ci) {
         if(((TranslatableText) title).getKey().equals("text.cloth-config.quit_config")) {
-            children.clear();
-            this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 96, 150, 20, this.yesTranslated, (buttonWidget) -> {
+            field_33808.add(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 96, 150, 20, this.yesTranslated, (buttonWidget) -> {
                 this.callback.accept(true);
                 ConfigUtil.tempAllEntityList.clear();
                 ConfigUtil.tempHostileEntityList.clear();
                 ConfigUtil.initEntities();
             }));
-            this.addButton(new ButtonWidget(this.width / 2 - 155 + 160, this.height / 6 + 96, 150, 20, this.noTranslated, (buttonWidget) -> {
+            field_33808.add(new ButtonWidget(this.width / 2 - 155 + 160, this.height / 6 + 96, 150, 20, this.noTranslated, (buttonWidget) -> {
                 this.callback.accept(false);
             }));
 
