@@ -8,7 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.CombatEventS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +31,6 @@ import static com.skilles.spokenword.util.Util.*;
  */
 @Mixin(ClientPlayNetworkHandler.class)
 public class NetworkHandlerMixin {
-    @Final
     @Shadow private MinecraftClient client;
 
     @Shadow private ClientWorld world;
@@ -42,11 +41,10 @@ public class NetworkHandlerMixin {
             sendMessages(ON_JOIN_LIST);
         }
     }
-    @Inject(method = "onDeathMessage(Lnet/minecraft/network/packet/s2c/play/DeathMessageS2CPacket;)V", at = @At(value = "TAIL"))
-    private void onDeathMessage(DeathMessageS2CPacket packet, CallbackInfo ci) {
-        if(globalEnabled() && modeConfig().death) {
-            assert MinecraftClient.getInstance().world != null;
-            Entity attacker = world.getEntityById(packet.getKillerId());
+    @Inject(method = "onCombatEvent", at = @At(value = "TAIL"))
+    private void onCombatInject(CombatEventS2CPacket packet, CallbackInfo ci) {
+        if(globalEnabled() && modeConfig().death && packet.type == CombatEventS2CPacket.Type.ENTITY_DIED) {
+            Entity attacker = world.getEntityById(packet.attackerEntityId);
             if(attacker != null) {
                 if(attacker instanceof MobEntity && deathConfig().pve) {
                     if(deathConfig().entityKillList.contains("ANY") || containsEntity(attacker, ListModes.HOSTILE)) {
@@ -58,7 +56,7 @@ public class NetworkHandlerMixin {
                     sendMessages(attacker.getDisplayName().getString(), PVP_LIST);
                 }
             } else {
-                sendMessages(new TranslatableText("selectWorld.world"), PVP_LIST);
+                sendMessages(new TranslatableText("selectWorld.world"), PVE_LIST);
             }
         }
     }
