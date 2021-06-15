@@ -3,6 +3,7 @@ package com.skilles.spokenword.config;
 import com.skilles.spokenword.SpokenWord;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class ConfigPojo {
         public boolean globalEnable = true;
         @Setting(comment = "Auto respawn")
         public boolean respawn = false;
+        @Setting(comment = "Auto respawn")
+        public List<String> ipFilter = new ArrayList<>();
     }
     @Setting.Group
     public static ModeGroup modeGroup = new ModeGroup();
@@ -53,13 +56,16 @@ public class ConfigPojo {
     public static ChatGroup chatGroup = new ChatGroup();
 
     public static class ChatGroup {
-        @Setting(comment = "Sends when someone sends a certain message")
+        @Setting(comment = "Sends when someone sends a certain chat")
         public boolean onChat = false;
-        public boolean onMessage = true;
         @Setting(comment = "Criteria for 'On Chat' mode")
         public List<String> chatCriteria = Arrays.asList("%p");
+        @Setting(comment = "Sends when someone sends a certain message")
+        public boolean onMessage = true;
         @Setting(comment = "Criteria for 'On Message' mode")
         public List<String> messageCriteria = Arrays.asList("%p");
+        public boolean gg = false;
+        public String ggMessage = "gg";
     }
     @Setting.Group
     public static ListGroup listGroup = new ListGroup();

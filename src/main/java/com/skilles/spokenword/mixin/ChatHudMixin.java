@@ -39,8 +39,12 @@ public class ChatHudMixin {
                     } else if (messageType.equals(MessageType.CHAT) && chatConfig().onChat && tMessage.getKey().equals("chat.type.text")) {
                         log(tMessage);
                         log(playerName);
-                        if (!playerName.equalsIgnoreCase(currentPlayer) && Util.containsCriteria(currentPlayer, tMessage, CHAT_LIST))
-                            sendMessages(playerName, CHAT_LIST);
+                        if(!playerName.equalsIgnoreCase(currentPlayer)) {
+                            if (Util.containsCriteria(currentPlayer, tMessage, CHAT_LIST))
+                                sendMessages(playerName, CHAT_LIST);
+                            if (chatConfig().gg && StringUtils.containsIgnoreCase(tMessage.getString(), "gg"))
+                                Util.sendGG();
+                        }
                     } else if (chatConfig().onMessage && tMessage.getKey().equals("commands.message.display.incoming")) {
                         if (!playerName.equalsIgnoreCase(currentPlayer) && Util.containsCriteria(currentPlayer, tMessage, MESSAGE_LIST))
                             sendMessages(playerName, MESSAGE_LIST);

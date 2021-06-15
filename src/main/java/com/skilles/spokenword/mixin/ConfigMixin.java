@@ -73,20 +73,20 @@ abstract class QuitMixin extends Screen {
  */
 @Pseudo
 @Mixin(value = DropdownBoxEntry.class)
-abstract class ResetMixin<T> {
+abstract class ResetMixin<String> {
     @Shadow protected ButtonWidget resetButton;
-    @Shadow protected DropdownBoxEntry.SelectionElement<T> selectionElement;
+    @Shadow protected DropdownBoxEntry.SelectionElement<String> selectionElement;
 
     @Inject(method = "<init>(Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;Ljava/util/function/Supplier;ZLjava/util/function/Supplier;Ljava/util/function/Consumer;Ljava/lang/Iterable;Lme/shedaniel/clothconfig2/gui/entries/DropdownBoxEntry$SelectionTopCellElement;Lme/shedaniel/clothconfig2/gui/entries/DropdownBoxEntry$SelectionCellCreator;)V", at = @At(value = "TAIL"))
-    private void constructorInject(Text fieldName, @NotNull Text resetButtonKey, @Nullable Supplier<Optional<Text[]>> tooltipSupplier, boolean requiresRestart, @Nullable Supplier<T> defaultValue, @Nullable Consumer<T> saveConsumer, @Nullable Iterable<T> selections, DropdownBoxEntry.@NotNull SelectionTopCellElement<T> topRenderer, DropdownBoxEntry.@NotNull SelectionCellCreator<T> cellCreator, CallbackInfo ci) {
+    private void constructorInject(Text fieldName, @NotNull Text resetButtonKey, @Nullable Supplier<Optional<Text[]>> tooltipSupplier, boolean requiresRestart, @Nullable Supplier<String> defaultValue, @Nullable Consumer<String> saveConsumer, @Nullable Iterable<String> selections, DropdownBoxEntry.@NotNull SelectionTopCellElement<String> topRenderer, DropdownBoxEntry.@NotNull SelectionCellCreator<String> cellCreator, CallbackInfo ci) {
         if(Objects.equals(selections, ConfigUtil.modeToList(ConfigUtil.ListModes.HOSTILE))) {
             resetButton = new ButtonWidget(0, 0, MinecraftClient.getInstance().textRenderer.getWidth(resetButtonKey) + 6, 20, resetButtonKey, (widget) -> {
-                selectionElement.getTopRenderer().setValue(defaultValue.get());
+                selectionElement.getTopRenderer().setValue(defaultValue != null ? defaultValue.get() : null);
                 ConfigUtil.tempHostileEntityList.clear();
             });
         } else if(Objects.equals(selections, ConfigUtil.modeToList(ConfigUtil.ListModes.ALL))) {
             resetButton = new ButtonWidget(0, 0, MinecraftClient.getInstance().textRenderer.getWidth(resetButtonKey) + 6, 20, resetButtonKey, (widget) -> {
-                selectionElement.getTopRenderer().setValue(defaultValue.get());
+                selectionElement.getTopRenderer().setValue(defaultValue != null ? defaultValue.get() : null);
                 ConfigUtil.tempAllEntityList.clear();
             });
         }

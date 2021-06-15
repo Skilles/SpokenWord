@@ -50,6 +50,20 @@ public class Util {
         assert player != null;
         if(autoRespawn()) player.requestRespawn();
     }
+    public static void sendGG() {
+        assert MinecraftClient.getInstance().player != null;
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(chatConfig().ggMessage));
+    }
+    public static boolean globalEnabled(boolean globalConfig) {
+        if(!generalConfig().ipFilter.isEmpty()) return checkServer() && globalConfig;
+        return globalConfig;
+    }
+    private static boolean checkServer() {
+        if(MinecraftClient.getInstance().getCurrentServerEntry() != null) {
+            return generalConfig().ipFilter.contains(MinecraftClient.getInstance().getCurrentServerEntry().address);
+        }
+        return true;
+    }
     // TODO: merge with Entity sendMessages
     public static void sendMessages(String playerName, Identifier id) {
         assert MinecraftClient.getInstance().player != null;
