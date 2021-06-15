@@ -72,7 +72,7 @@ abstract class QuitMixin extends Screen {
  * To clear/reinit temp lists when pressing reset button
  */
 @Pseudo
-@Mixin(value = DropdownBoxEntry.class, remap = false)
+@Mixin(value = DropdownBoxEntry.class)
 abstract class ResetMixin<T> {
     @Shadow protected ButtonWidget resetButton;
     @Shadow protected DropdownBoxEntry.SelectionElement<T> selectionElement;
