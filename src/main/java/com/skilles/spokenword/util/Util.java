@@ -11,6 +11,7 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class Util {
 
     public static boolean containsCriteria(String playerName, TranslatableText message, Identifier list) {
         String messageString = message.getString();
-        return getCriteria(list).stream().anyMatch(criteria -> messageString.contains(criteria.replace("%p", playerName)));
+        return getCriteria(list).stream().anyMatch(criteria -> StringUtils.containsIgnoreCase(messageString, criteria.replace("%p", playerName)));
     }
     private static void requestRespawn() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -63,6 +64,20 @@ public class Util {
             return generalConfig().ipFilter.contains(MinecraftClient.getInstance().getCurrentServerEntry().address);
         }
         return true;
+    }
+    public static String processName(String name) {
+        if(name != null) {
+            String output = name;
+            if (name.contains("|")) {
+                output = name.substring(name.indexOf("|") + 1);
+            }
+            if (name.contains(":")) {
+                output = name.substring(name.indexOf(":") + 1);
+            }
+            return output.trim();
+        } else {
+            return null;
+        }
     }
     // TODO: merge with Entity sendMessages
     public static void sendMessages(String playerName, Identifier id) {
