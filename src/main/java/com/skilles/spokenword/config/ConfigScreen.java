@@ -42,6 +42,12 @@ public class ConfigScreen {
                         new TranslatableText("config.spokenword.mode.respawn.tooltip2").formatted(Formatting.RED)}))
                 .setSaveConsumer((value) -> { generalGroup.respawn = value; })
                 .build());
+        general.addEntry(entryBuilder.startStrList(new TranslatableText("config.spokenword.list.ipfilter"), generalConfig().ipFilter)
+                .setSaveConsumer((value) -> {
+                    generalConfig().ipFilter = value;
+                })
+                .setTooltip(new TranslatableText("config.spokenword.list.ipfilter.tooltip"))
+                .build());
 
         ConfigCategory modes = builder.getOrCreateCategory(new TranslatableText("config.spokenword.category.modes"));
 
@@ -82,20 +88,32 @@ public class ConfigScreen {
         chatCategory.add(getBooleanEntry("onchat", chatGroup.onChat, false, entryBuilder)
                 .setSaveConsumer((value) -> { chatGroup.onChat = value; })
                 .build());
-        chatCategory.add(getBooleanEntry("onmessage", chatGroup.onMessage, true, entryBuilder)
-                .setSaveConsumer((value) -> { chatGroup.onMessage = value; })
-                .build());
         chatCategory.add(entryBuilder.startStrList(new TranslatableText("config.spokenword.list.chatcriteria"), chatConfig().chatCriteria)
                 .setSaveConsumer((value) -> {
                     chatConfig().chatCriteria = value;
                 })
                 .setTooltip(new TranslatableText("config.spokenword.list.chatcriteria.tooltip"))
                 .build());
+        chatCategory.add(getBooleanEntry("onmessage", chatGroup.onMessage, true, entryBuilder)
+                .setSaveConsumer((value) -> { chatGroup.onMessage = value; })
+                .build());
         chatCategory.add(entryBuilder.startStrList(new TranslatableText("config.spokenword.list.messagecriteria"), chatConfig().messageCriteria)
                 .setSaveConsumer((value) -> {
                     chatConfig().messageCriteria = value;
                 })
                 .setTooltip(new TranslatableText("config.spokenword.list.messagecriteria.tooltip"))
+                .build());
+        chatCategory.add(getBooleanEntry("gg", chatGroup.gg, false, entryBuilder)
+                .setSaveConsumer((value) -> {
+                    chatGroup.gg = value;
+                })
+                .build());
+        chatCategory.add(entryBuilder.startStrField(new TranslatableText("config.spokenword.ggmessage"), chatConfig().ggMessage)
+                .setDefaultValue("gg")
+                .setTooltip(new TranslatableText("config.spokenword.ggmessage.tooltip"))
+                .setSaveConsumer((value) -> {
+                    chatConfig().ggMessage = value;
+                })
                 .build());
         advanced.addEntry(deathCategory.build());
         advanced.addEntry(chatCategory.build());

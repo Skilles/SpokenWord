@@ -7,6 +7,7 @@ import com.skilles.spokenword.config.EntitySelectorCreator;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry;
 import me.shedaniel.clothconfig2.impl.builders.BooleanToggleBuilder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.text.LiteralText;
@@ -35,7 +36,6 @@ public class ConfigUtil {
         tempHostileEntityList.addAll(deathGroup.entityKillList);
         log("Entities initialized: " + tempAllEntityList);
     }
-
     public static BooleanToggleBuilder getBooleanEntry(String name, boolean bool, boolean defaultValue, ConfigEntryBuilder entryBuilder) {
         return entryBuilder.startBooleanToggle(new TranslatableText("config.spokenword.mode."+name), bool)
                 .setDefaultValue(defaultValue)
@@ -94,6 +94,7 @@ public class ConfigUtil {
     }
     public static boolean containsEntity(Entity entity, ListModes mode) {
         EntityType<?> entityType = entity.getType();
+        if(entityType.equals(EntityType.PLAYER) && entity.getDisplayName().equals(MinecraftClient.getInstance().player.getDisplayName())) return false; // do not trigger on self death
         return getList(mode).stream().findFirst().filter(type -> Objects.requireNonNull(EntityTypes.fromString(type)).getType().equals(entityType)).isPresent();
     }
     public static List<String> getList(ListModes mode) {

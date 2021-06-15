@@ -1,17 +1,20 @@
 package com.skilles.spokenword.config;
 
+import com.skilles.spokenword.util.Util;
 import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 import java.util.List;
 
+import static com.skilles.spokenword.SpokenWord.log;
 import static com.skilles.spokenword.config.ConfigPojo.*;
 import static com.skilles.spokenword.util.Util.*;
 
 public class ConfigManager {
     
     public static boolean globalEnabled() {
-        return generalGroup.globalEnable;
+        log(Util.globalEnabled(generalGroup.globalEnable));
+        return Util.globalEnabled(generalGroup.globalEnable);
     }
     public static boolean autoRespawn() {
         return generalGroup.respawn;

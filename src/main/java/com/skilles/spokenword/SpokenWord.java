@@ -115,6 +115,7 @@ public class SpokenWord implements ClientModInitializer {
 		PUFFERFISH(EntityType.PUFFERFISH),
 		PARROT(EntityType.PARROT),
 		MOOSHROOM(EntityType.MOOSHROOM),
+		PLAYER(EntityType.PLAYER),
 		ANY(EntityType.FURNACE_MINECART);
 		EntityTypes(EntityType<?> type) {
 			this.type = type;
