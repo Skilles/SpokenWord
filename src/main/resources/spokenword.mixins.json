@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.skilles.spokenword.mixin",
+  "package": "com.skilles.spokenword.mixin.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
-    "ChatHudMixin"
+    "ClientPacketListenerMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

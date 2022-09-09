@@ -1,65 +1,22 @@
 package com.skilles.spokenword.config;
 
-import com.skilles.spokenword.util.Util;
-import net.minecraft.util.Identifier;
+import com.skilles.spokenword.SpokenWord;
+import com.skilles.spokenword.SpokenWordClient;
+import me.shedaniel.autoconfig.ConfigHolder;
 
-import java.util.Collections;
-import java.util.List;
+public class ConfigManager
+{
 
-import static com.skilles.spokenword.SpokenWord.log;
-import static com.skilles.spokenword.config.ConfigPojo.*;
-import static com.skilles.spokenword.util.Util.*;
+    public static void onLoadConfig(ConfigHolder<SWConfigData> manager, SWConfigData newData)
+    {
+        SpokenWord.log("Config loaded");
+        SWConfig.set(newData);
+    }
 
-public class ConfigManager {
-    
-    public static boolean globalEnabled() {
-        log(Util.globalEnabled(generalGroup.globalEnable));
-        return Util.globalEnabled(generalGroup.globalEnable);
+    public static void onSaveConfig(ConfigHolder<SWConfigData> manager, SWConfigData data)
+    {
+        SpokenWord.log("Config saved");
+        SpokenWordClient.BEHAVIOR_MANAGER.init(data);
     }
-    public static boolean autoRespawn() {
-        return generalGroup.respawn;
-    }
-    public static List<String> getList(Identifier id) {
-        if (id.equals(PVP_LIST)) {
-            return listConfig().pvpList;
-        } else if (id.equals(PVE_LIST)) {
-            return listConfig().pveList;
-        } else if (id.equals(PLAYER_JOIN_LIST)) {
-            return listConfig().playerJoinList;
-        } else if (id.equals(ON_JOIN_LIST)) {
-            return listConfig().onJoinList;
-        } else if(id.equals(BREAK_LIST)) {
-            return listConfig().breakList;
-        } else if(id.equals(OWNED_DEATH_LIST)) {
-            return listConfig().ownDeathList;
-        } else if(id.equals(ENTITY_DEATH_LIST)) {
-            return listConfig().entityDiedList;
-        } else if(id.equals(CHAT_LIST)) {
-            return listConfig().chatList;
-        } else if(id.equals(MESSAGE_LIST)) {
-            return listConfig().messageList;
-        }
-        return Collections.singletonList("UNKNOWN LIST");
-    }
-    public static List<String> getCriteria(Identifier id) {
-        if(id.equals(CHAT_LIST)) {
-            return chatConfig().chatCriteria;
-        } else if(id.equals(MESSAGE_LIST)) {
-            return chatConfig().messageCriteria;
-        }
-        return Collections.emptyList();
-    }
-    public static GeneralGroup generalConfig() {
-        return generalGroup;
-    }
-    public static DeathGroup deathConfig() {
-        return deathGroup;
-    }
-    public static ChatGroup chatConfig() {
-        return chatGroup;
-    }
-    public static ModeGroup modeConfig() {
-        return modeGroup;
-    }
-    public static ListGroup listConfig() { return listGroup; }
+
 }

@@ -1,145 +1,58 @@
 package com.skilles.spokenword;
 
-import com.google.common.collect.Maps;
-import com.skilles.spokenword.config.ModConfig;
-import com.skilles.spokenword.util.ConfigUtil;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
+import com.skilles.spokenword.config.ConfigManager;
+import com.skilles.spokenword.config.SWConfig;
+import com.skilles.spokenword.config.SWConfigData;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
-import java.util.Arrays;
-import java.util.Map;
+public class SpokenWord implements ModInitializer
+{
 
-@Environment(EnvType.CLIENT)
-public class SpokenWord implements ClientModInitializer {
+    public static final EntityType<?> DEFAULT_ENTITY = EntityType.LEASH_KNOT;
 
-	public static Logger LOGGER = LogManager.getLogger();
+    public static Logger LOGGER = LogManager.getLogger();
 
-	public static void log(Level level, String message) {
-		LOGGER.log(level, "[SpokenWord] "+message);
-	}
-	public static void log(String message) {
-		log(Level.INFO, message);
-	}
-	public static void log(Object message) {
-		log(String.valueOf(message));
-	}
+    @Override
+    public void onInitialize(ModContainer mod)
+    {
+        var holder = AutoConfig.register(SWConfigData.class, GsonConfigSerializer::new);
 
-	@Override
-	public void onInitializeClient() {
-		ModConfig.loadModConfig();
-		ConfigUtil.initEntities();
-	}
-	public enum HostileTypes {
-		ZOMBIE(EntityType.ZOMBIE),
-		SKELETON(EntityType.SKELETON),
-		ENDERMAN(EntityType.ENDERMAN),
-		SLIME(EntityType.SLIME),
-		PILLAGER(EntityType.PILLAGER),
-		GUARDIAN(EntityType.GUARDIAN),
-		SILVERFISH(EntityType.SILVERFISH),
-		SPIDER(EntityType.SPIDER),
-		BLAZE(EntityType.BLAZE),
-		CREEPER(EntityType.CREEPER),
-		WITCH(EntityType.WITCH),
-		VEX(EntityType.VEX),
-		RAVAGER(EntityType.RAVAGER),
-		VINDICATOR(EntityType.VINDICATOR),
-		ENDERMITE(EntityType.ENDERMITE),
-		EVOKER(EntityType.EVOKER),
-		HOGLIN(EntityType.HOGLIN),
-		PIGLIN(EntityType.PIGLIN),
-		WITHER(EntityType.WITHER),
-		ENDERDRAGON(EntityType.ENDER_DRAGON),
-		GHAST(EntityType.GHAST),
-		HUSK(EntityType.HUSK),
-		MAGMACUBE(EntityType.MAGMA_CUBE),
-		DROWNED(EntityType.DROWNED),
-		STRAY(EntityType.STRAY),
-		CAVESPIDER(EntityType.CAVE_SPIDER),
-		ZOGLIN(EntityType.ZOGLIN),
-		ZOMBIEVILLAGER(EntityType.ZOMBIE_VILLAGER),
-		ELDERGUARDIAN(EntityType.ELDER_GUARDIAN),
-		ANY(EntityType.FURNACE_MINECART);
+        SWConfig.set(holder.getConfig());
 
-		HostileTypes(EntityType<?> type) {
-		}
-	}
-	public enum EntityTypes {
-		ZOMBIE(EntityType.ZOMBIE),
-		SKELETON(EntityType.SKELETON),
-		ENDERMAN(EntityType.ENDERMAN),
-		SLIME(EntityType.SLIME),
-		PILLAGER(EntityType.PILLAGER),
-		GUARDIAN(EntityType.GUARDIAN),
-		SILVERFISH(EntityType.SILVERFISH),
-		SPIDER(EntityType.SPIDER),
-		BLAZE(EntityType.BLAZE),
-		CREEPER(EntityType.CREEPER),
-		WITCH(EntityType.WITCH),
-		VEX(EntityType.VEX),
-		RAVAGER(EntityType.RAVAGER),
-		VINDICATOR(EntityType.VINDICATOR),
-		ENDERMITE(EntityType.ENDERMITE),
-		EVOKER(EntityType.EVOKER),
-		HOGLIN(EntityType.HOGLIN),
-		PIGLIN(EntityType.PIGLIN),
-		ZOGLIN(EntityType.ZOGLIN),
-		WITHER(EntityType.WITHER),
-		ENDERDRAGON(EntityType.ENDER_DRAGON),
-		GHAST(EntityType.GHAST),
-		HUSK(EntityType.HUSK),
-		MAGMACUBE(EntityType.MAGMA_CUBE),
-		DROWNED(EntityType.DROWNED),
-		STRAY(EntityType.STRAY),
-		CAVESPIDER(EntityType.CAVE_SPIDER),
-		ZOMBIEVILLAGER(EntityType.ZOMBIE_VILLAGER),
-		ELDERGUARDIAN(EntityType.ELDER_GUARDIAN),
-		VILLAGER(EntityType.VILLAGER),
-		OCELOT(EntityType.OCELOT),
-		RABBIT(EntityType.RABBIT),
-		HORSE(EntityType.HORSE),
-		LLAMA(EntityType.LLAMA),
-		PANDA(EntityType.PANDA),
-		WOLF(EntityType.WOLF),
-		BEE(EntityType.BEE),
-		STRIDER(EntityType.STRIDER),
-		TURTLE(EntityType.TURTLE),
-		FISH(EntityType.TROPICAL_FISH),
-		PUFFERFISH(EntityType.PUFFERFISH),
-		PARROT(EntityType.PARROT),
-		MOOSHROOM(EntityType.MOOSHROOM),
-		PLAYER(EntityType.PLAYER),
-		ANY(EntityType.FURNACE_MINECART);
-		EntityTypes(EntityType<?> type) {
-			this.type = type;
-		}
-		private final EntityType<?> type;
-		public EntityType<?> getType() {
-			return this.type;
-		}
-		@Nullable
-		public static EntityTypes fromString(String string) {
-			for(EntityTypes type : values()) {
-				if(type.name().equalsIgnoreCase(string)) return type;
-			}
-			return null;
-		}
-		private static final Map<EntityType<?>, EntityTypes> LOOKUP = Maps.newHashMapWithExpectedSize(EntityTypes.values().length);
-		static {
-			for (EntityTypes type : EntityTypes.values()) {
-				LOOKUP.put(type.getType(), type);
-			}
-		}
-		@Nullable
-		public static EntityTypes fromType(EntityType<?> type) {
-			return LOOKUP.getOrDefault(type, null);
-		}
-	}
+        AutoConfig.getConfigHolder(SWConfigData.class).registerSaveListener((manager, data) ->
+        {
+            ConfigManager.onSaveConfig(manager, data);
+            return InteractionResult.SUCCESS;
+        });
+
+        AutoConfig.getConfigHolder(SWConfigData.class).registerLoadListener((manager, newData) ->
+        {
+            ConfigManager.onLoadConfig(manager, newData);
+            return InteractionResult.SUCCESS;
+        });
+    }
+
+    public static void log(Object message)
+    {
+        log(String.valueOf(message));
+    }
+
+    public static void log(String message)
+    {
+        log(Level.INFO, message);
+    }
+
+    public static void log(Level level, String message)
+    {
+        LOGGER.log(level, "[SpokenWord] " + message);
+    }
+
 }

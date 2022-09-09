@@ -21,7 +21,7 @@
 		"entrypoints": {
 			"init": "com.skilles.spokenword.SpokenWord",
 			"client_init": "com.skilles.spokenword.SpokenWordClient",
-			"modmenu": "com.skilles.spokenword.config.ModMenuIntegration"
+			"modmenu": "com.skilles.spokenword.SpokenWordClient"
 		},
 		"depends": [
 			{
