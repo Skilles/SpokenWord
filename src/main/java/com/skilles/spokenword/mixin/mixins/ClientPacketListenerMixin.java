@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,6 +56,12 @@ public class ClientPacketListenerMixin
     void onChatMessage(ClientboundSystemChatPacket packet, CallbackInfo ci)
     {
         MixinUtil.handleMixin(MixinCommands::handleSystemMessage, packet.content(), ci);
+    }
+
+    @Inject(method = "onDisconnect", at = @At(value = "HEAD"))
+    void onDisconnect(Component reason, CallbackInfo ci)
+    {
+        MixinUtil.handleMixin(MixinCommands::handleDisconnect, reason, ci);
     }
 
 }

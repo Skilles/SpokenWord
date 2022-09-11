@@ -29,6 +29,11 @@ public class MixinCommands
             return;
         }
 
+        if (Minecraft.getInstance().player == null)
+        {
+            return;
+        }
+
         if (message.signer().profileId().equals(Minecraft.getInstance().player.getUUID()))
         {
             return;
@@ -61,7 +66,7 @@ public class MixinCommands
 
         String id = switch (tc.getKey())
         {
-            case "multiplayer.player.joined" -> "otherJoin";
+            case "multiplayer.player.joined", "multiplayer.player.joined.renamed" -> "otherJoin";
             case "multiplayer.player.left" -> "otherLeave"; // TODO allow override in config for custom server messages
             default -> null;
         };
@@ -123,7 +128,21 @@ public class MixinCommands
         }
         else
         {
-            SpokenWordClient.BEHAVIOR_MANAGER.activate("otherJoin", new RegexPair('p', Minecraft.getInstance().level.getEntity(playerId).getDisplayName().getString()));
+            SpokenWordClient.BEHAVIOR_MANAGER.activate("otherJoin");
+        }
+    }
+
+    public static void handleDisconnect(Component reason, CallbackInfo ci)
+    {
+        SpokenWordClient.BEHAVIOR_MANAGER.activate("selfLeave", new RegexPair('r', reason.getString()));
+        // wait a bit to allow the message to be sent
+        try
+        {
+            Thread.sleep(5);
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

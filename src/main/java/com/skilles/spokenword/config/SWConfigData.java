@@ -68,12 +68,28 @@ public class SWConfigData implements ConfigData
         public List<String> onPlayerJoinList = List.of("Welcome %s!");
 
         @ConfigEntry.Gui.Tooltip
+        @BehaviorToggle("otherLeave")
+        public boolean onPlayerLeave = true;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("otherLeave")
+        public List<String> onPlayerLeaveList = List.of("You will be missed %s");
+
+        @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("selfJoin")
         public boolean onJoin = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("selfJoin")
         public List<String> onJoinList = List.of("I, %p, have joined the server");
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorToggle("selfLeave")
+        public boolean onLeave = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("selfLeave")
+        public List<String> onLeaveList = List.of("I, %p, am leaving the server");
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("selfDeath")
