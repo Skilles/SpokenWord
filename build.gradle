@@ -26,10 +26,10 @@ repositories {
 
 dependencies {
 	minecraft libs.minecraft
-	mappings(loom.layered {
-		mappings "org.quiltmc:quilt-mappings:1.19.2+build.intermediary-test.1:intermediary-v2"
+	mappings loom.layered {
+		mappings "org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:intermediary-v2"
 		officialMojangMappings()
-	})
+	}
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
@@ -45,7 +45,7 @@ dependencies {
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu}"
 
-	modImplementation "com.ptsmods:devlogin:${project.devlogin}"
+	// modImplementation "com.ptsmods:devlogin:${project.devlogin}"
 
 	modImplementation "org.reflections:reflections:${project.reflections}"
 }
