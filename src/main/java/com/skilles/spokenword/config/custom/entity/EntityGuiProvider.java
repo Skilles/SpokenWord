@@ -8,7 +8,7 @@ import me.shedaniel.autoconfig.gui.registry.api.GuiRegistryAccess;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 
@@ -57,7 +57,7 @@ public class EntityGuiProvider implements GuiProvider
 
     private static Iterable<EntityType<?>> getSelections(ListModes mode)
     {
-        var entityStream = Registry.ENTITY_TYPE.stream();
+        var entityStream = BuiltInRegistries.ENTITY_TYPE.stream();
 
         if (mode.equals(ListModes.HOSTILE))
         {

@@ -1,5 +1,10 @@
 package com.skilles.spokenword.behaviors;
 
+import com.skilles.spokenword.behaviors.regex.RegexPair;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -17,23 +22,29 @@ public class MessageBehavior extends AbstractBehavior
         this.filters = filters;
     }
 
-    public boolean matchesFilter(String message, RegexPair... regex)
+    public boolean matchesFilter(@NotNull String message, Iterable<RegexPair> regex)
     {
-        return filters.stream().anyMatch(filter -> message.contains(getParsedMessage(filter, regex))); // TODO add config option for regex input
+        // for regex input
+        return filters.stream().anyMatch(filter -> message.contains(getParsedMessage(filter, regex))); // TODO add config option
     }
 
     @Override
-    public void activate(RegexPair... regex)
+    public void onActivate(BehaviorContext ctx)
     {
-        sendMessages(regex);
+        var regex = ctx.regex().orElseThrow();
+
+        if (filters.isEmpty() || matchesFilter(ctx.message().orElseThrow(), regex))
+        {
+            sendMessages(ctx.player(), regex);
+        }
     }
 
-    private void sendMessages(RegexPair... regex)
+    private void sendMessages(Player player, Iterable<RegexPair> regex)
     {
-        messages.forEach(message -> sendMessage(getParsedMessage(message, regex)));
+        messages.forEach(message -> sendMessage(player, getParsedMessage(message, regex)));
     }
 
-    private static String getParsedMessage(String message, RegexPair... regex)
+    private static String getParsedMessage(String message, Iterable<RegexPair> regex)
     {
         for (RegexPair pair : regex)
         {
@@ -42,15 +53,15 @@ public class MessageBehavior extends AbstractBehavior
         return message;
     }
 
-    private static void sendMessage(String message)
+    private static void sendMessage(Player player, String message)
     {
         if (message.startsWith("/"))
         {
-            getPlayer().commandSigned(message.substring(1), null);
+            ((LocalPlayer)player).connection.sendCommand(message.substring(1));
         }
         else
         {
-            getPlayer().chatSigned(message.replaceAll("\"", ""), null);
+            ((LocalPlayer)player).connection.sendChat(message.replaceAll("\"", ""));
         }
     }
 
@@ -60,6 +71,8 @@ public class MessageBehavior extends AbstractBehavior
         private Collection<String> messages;
 
         private Collection<String> filters;
+
+        private boolean advanced;
 
         public Builder()
         {
@@ -95,11 +108,16 @@ public class MessageBehavior extends AbstractBehavior
             return this;
         }
 
-        public MessageBehavior build()
+        public Builder setAdvanced()
         {
-            return new MessageBehavior(messages, filters);
+            this.advanced = true;
+
+            return this;
         }
 
+        public MessageBehavior build()
+        {
+            return advanced ? new AdvancedMessageBehavior(messages, filters) : new MessageBehavior(messages, filters);
+        }
     }
-
 }

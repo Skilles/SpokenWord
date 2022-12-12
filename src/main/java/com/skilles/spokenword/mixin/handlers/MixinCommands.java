@@ -1,11 +1,13 @@
 package com.skilles.spokenword.mixin.handlers;
 
+import com.skilles.spokenword.SpokenWord;
 import com.skilles.spokenword.SpokenWordClient;
-import com.skilles.spokenword.behaviors.RegexPair;
+import com.skilles.spokenword.behaviors.regex.RegexPair;
 import com.skilles.spokenword.config.ConfigUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.PlayerChatMessage;
@@ -13,54 +15,66 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@ClientOnly
 public class MixinCommands
 {
 
-    private static final ChatType CHAT_TYPE = BuiltinRegistries.CHAT_TYPE.get(ChatType.CHAT);
+    private static final ChatType CHAT_TYPE;
 
-    private static final ChatType MESSAGE_TYPE = BuiltinRegistries.CHAT_TYPE.get(ChatType.MSG_COMMAND_INCOMING);
+    private static final ChatType MESSAGE_TYPE;
+
+    static
+    {
+        var lookup = VanillaRegistries.createLookup().lookup(Registries.CHAT_TYPE).get();
+        CHAT_TYPE = lookup.get(ChatType.CHAT).get().value();
+        MESSAGE_TYPE = lookup.get(ChatType.MSG_COMMAND_INCOMING).get().value();
+    }
 
     public static void handleChatMessage(PlayerChatMessage message, ChatType.Bound bound, CallbackInfo ci)
     {
-        if (message.signer().isSystem())
+        if (message.isSystem() ||
+                Minecraft.getInstance().player == null ||
+                message.sender().equals(Minecraft.getInstance().player.getUUID()))
         {
             return;
         }
 
-        if (Minecraft.getInstance().player == null)
-        {
-            return;
-        }
+        var sender = Minecraft.getInstance().level.getPlayerByUUID(message.sender());
 
-        if (message.signer().profileId().equals(Minecraft.getInstance().player.getUUID()))
-        {
-            return;
-        }
+        String id;
 
-        var sender = Minecraft.getInstance().level.getPlayerByUUID(message.signedHeader().sender());
-
-        if (bound.chatType().equals(CHAT_TYPE))
+        if (bound.chatType().equals(CHAT_TYPE) || bound.chatType().chat().translationKey().equals("%s"))
         {
-            SpokenWordClient.BEHAVIOR_MANAGER.activate(
-                    "otherChat",
-                    message.signedContent().plain(),
-                    new RegexPair('s', sender.getDisplayName().getString())); // replace %s with sender name
+            id = "otherChat";
         }
         else if (bound.chatType().equals(MESSAGE_TYPE))
         {
-            SpokenWordClient.BEHAVIOR_MANAGER.activate(
-                    "otherMessage",
-                    message.signedContent().plain(),
-                    new RegexPair('s', sender.getDisplayName().getString()));
+           id = "otherMessage";
         }
+        else
+        {
+            SpokenWord.LOGGER.info("Unknown chat type: " + bound.chatType().chat().translationKey());
+            return;
+        }
+
+        SpokenWordClient.BEHAVIOR_MANAGER
+                .startQuery(id)
+                .withMessage(message.signedContent())
+                .withRegex(new RegexPair('s', sender.getDisplayName().getString()))
+                .activate();
     }
 
     public static void handleSystemMessage(Component component, CallbackInfo ci)
     {
         if (!(component.getContents() instanceof TranslatableContents tc))
         {
+            if (Minecraft.getInstance().getCurrentServer() != null && !component.getSiblings().isEmpty())
+            {
+                // TODO
+            }
             return;
         }
 
@@ -84,7 +98,10 @@ public class MixinCommands
             return;
         }
 
-        SpokenWordClient.BEHAVIOR_MANAGER.activate(id, new RegexPair('s', playerName));
+        SpokenWordClient.BEHAVIOR_MANAGER
+                .startQuery(id)
+                .withRegex(new RegexPair('s', playerName))
+                .activate();
     }
 
     public static void handlePlayerCombatKill(int playerId, int killerId, CallbackInfo ci)
@@ -106,18 +123,26 @@ public class MixinCommands
 
         if (killer.getType() == EntityType.PLAYER)
         {
-            SpokenWordClient.BEHAVIOR_MANAGER.activate("selfDeathPvp", new RegexPair('s', killer.getName().getString()));
+            SpokenWordClient.BEHAVIOR_MANAGER
+                    .startQuery("otherDeath")
+                    .withRegex(new RegexPair('s', killer.getDisplayName().getString()))
+                    .activate();
         }
         else
         {
-            SpokenWordClient.BEHAVIOR_MANAGER.activate("selfDeathPve", new RegexPair('e', killer.getType().getDescription().getString()));
+            SpokenWordClient.BEHAVIOR_MANAGER
+                    .startQuery("selfDeathPve")
+                    .withRegex(new RegexPair('e', killer.getType().getDescription().getString()))
+                    .activate();
         }
     }
 
     public static void handleDestroyBlock(BlockPos blockPos, CallbackInfo ci)
     {
-        SpokenWordClient.BEHAVIOR_MANAGER.activate("blockBreak",
-                new RegexPair('b', Minecraft.getInstance().level.getBlockState(blockPos).getBlock().getName().getString()));
+        SpokenWordClient.BEHAVIOR_MANAGER
+                .startQuery("blockBreak")
+                .withRegex(new RegexPair('b', Minecraft.getInstance().level.getBlockState(blockPos).getBlock().getName().getString()))
+                .activate();
     }
 
     public static void handleLogin(int playerId, CallbackInfo ci)
@@ -134,7 +159,11 @@ public class MixinCommands
 
     public static void handleDisconnect(Component reason, CallbackInfo ci)
     {
-        SpokenWordClient.BEHAVIOR_MANAGER.activate("selfLeave", new RegexPair('r', reason.getString()));
+        SpokenWordClient.BEHAVIOR_MANAGER
+                .startQuery("selfLeave")
+                .withRegex(new RegexPair('r', reason.getString()))
+                .activate();
+
         // wait a bit to allow the message to be sent
         try
         {
@@ -148,21 +177,41 @@ public class MixinCommands
 
     public static void handleEntityEvent(byte eventId, Entity entity, CallbackInfo ci)
     {
-        if (eventId == 3)
+        if (eventId == 3 && !entity.getType().equals(EntityType.PLAYER))
         {
             var entityRegex = new RegexPair('e', entity.getType().getDescription().getString());
 
-            SpokenWordClient.BEHAVIOR_MANAGER.activate("entityDeath", ConfigUtil.entityToString(entity.getType()), entityRegex);
+            SpokenWordClient.BEHAVIOR_MANAGER
+                    .startQuery("entityDeath")
+                    .withMessage(ConfigUtil.entityToString(entity.getType()))
+                    .withRegex(entityRegex)
+                    .activate();
 
             if (entity.hasCustomName())
             {
-                SpokenWordClient.BEHAVIOR_MANAGER.activate("ownedEntityDeath", entityRegex); // TODO add hidden config options
+
+                SpokenWordClient.BEHAVIOR_MANAGER
+                        .startQuery("ownedEntityDeath")
+                        .withRegex(entityRegex)
+                        .activate(); // TODO add hidden config options
             }
             else if (entity instanceof TamableAnimal animal && animal.isTame() && animal.isOwnedBy(Minecraft.getInstance().player))
             {
-                SpokenWordClient.BEHAVIOR_MANAGER.activate("ownedEntityDeath", entityRegex);
+                SpokenWordClient.BEHAVIOR_MANAGER
+                        .startQuery("ownedEntityDeath")
+                        .withRegex(entityRegex)
+                        .activate();
             }
         }
+    }
+
+    public static void handleLevelUp(int newLevel, CallbackInfo ci)
+    {
+        SpokenWordClient.BEHAVIOR_MANAGER
+                .startQuery("reachLevel")
+                .withValue(newLevel)
+                .withRegex(new RegexPair('l', String.valueOf(newLevel)))
+                .activate();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.skilles.spokenword.behaviors.actions;
 
 import com.skilles.spokenword.behaviors.AbstractBehavior;
-import com.skilles.spokenword.behaviors.RegexPair;
+import com.skilles.spokenword.behaviors.BehaviorContext;
 
 public abstract class ActionBehavior extends AbstractBehavior
 {
@@ -15,7 +15,7 @@ public abstract class ActionBehavior extends AbstractBehavior
     }
 
     @Override
-    public void activate(RegexPair... args)
+    public void onActivate(BehaviorContext ctx)
     {
         action.run();
     }

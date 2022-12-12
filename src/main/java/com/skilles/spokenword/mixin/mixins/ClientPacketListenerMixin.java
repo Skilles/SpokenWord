@@ -2,13 +2,12 @@ package com.skilles.spokenword.mixin.mixins;
 
 import com.skilles.spokenword.mixin.handlers.MixinCommands;
 import com.skilles.spokenword.mixin.handlers.MixinUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.network.chat.*;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.world.entity.Entity;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,8 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Optional;
+import java.util.UUID;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(ClientPacketListener.class)
 public class ClientPacketListenerMixin
 {
@@ -45,11 +45,13 @@ public class ClientPacketListenerMixin
 
     @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "OptionalGetWithoutIsPresent"})
     @Inject(method = "handlePlayerChat", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/multiplayer/chat/ChatListener;handleChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/network/chat/ChatType$Bound;)V"),
+            target = "Lnet/minecraft/client/multiplayer/chat/ChatListener;handlePlayerChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/network/chat/ChatType$Bound;)V"),
             locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    void onChatMessage(ClientboundPlayerChatPacket packet, CallbackInfo ci, Optional<ChatType.Bound> optional)
+    void onChatMessage(ClientboundPlayerChatPacket packet, CallbackInfo ci, Optional<SignedMessageBody> optional, Optional<ChatType.Bound> bound,
+                       UUID uUID, PlayerInfo playerInfo, RemoteChatSession remoteChatSession, SignedMessageLink signedMessageLink,
+                       PlayerChatMessage chatMessage)
     {
-        MixinUtil.handleMixin(MixinCommands::handleChatMessage, packet.message(), optional.get(), ci);
+        MixinUtil.handleMixin(MixinCommands::handleChatMessage, chatMessage, bound.get(), ci);
     }
 
     @Inject(method = "handleSystemChat", at = @At(value = "TAIL"))
@@ -63,5 +65,4 @@ public class ClientPacketListenerMixin
     {
         MixinUtil.handleMixin(MixinCommands::handleDisconnect, reason, ci);
     }
-
 }

@@ -61,7 +61,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("otherJoin")
-        public boolean onPlayerJoin = true;
+        public boolean onPlayerJoin = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("otherJoin")
@@ -69,7 +69,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("otherLeave")
-        public boolean onPlayerLeave = true;
+        public boolean onPlayerLeave = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("otherLeave")
@@ -93,7 +93,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("selfDeath")
-        public boolean onDeath = true;
+        public boolean onDeath = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("selfDeath")
@@ -109,7 +109,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("ownedEntityDeath")
-        public boolean onOwnedDeath = true;
+        public boolean onOwnedDeath = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("ownedEntityDeath")
@@ -125,7 +125,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("selfDeathPvp")
-        public boolean onDeathPvp = true;
+        public boolean onDeathPvp = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("selfDeathPvp")
@@ -141,7 +141,7 @@ public class SWConfigData implements ConfigData
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorToggle("otherMessage")
-        public boolean onMessage = true;
+        public boolean onMessage = false;
 
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("otherMessage")
@@ -154,7 +154,56 @@ public class SWConfigData implements ConfigData
         @ConfigEntry.Gui.Tooltip
         @BehaviorMessage("otherChat")
         public List<String> onChatList = List.of("Oi!");
+        
+        @BehaviorToggle("blockPlace")
+        @ConfigEntry.Gui.Tooltip
+        public boolean onBlockPlace = false;
 
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("blockPlace")
+        public List<String> onBlockPlaceList = List.of("I have placed %b");
+
+        @BehaviorToggle("dimChange")
+        @ConfigEntry.Gui.Tooltip
+        public boolean onDimChange = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("dimChange")
+        public List<String> onDimChangeList = List.of("I am now in the %d dimension");
+
+        @BehaviorToggle("killPvp")
+        @ConfigEntry.Gui.Tooltip
+        public boolean onKillPvp = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("killPvp")
+        public List<String> onKillPvpList = List.of("I have slain %s");
+
+        @BehaviorToggle("killPve")
+        @ConfigEntry.Gui.Tooltip
+        public boolean onKillPve = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage("killPve")
+        public List<String> onKillPveList = List.of("I have slain %e");
+
+        /* TODO
+            onRespawn
+            onAdvancement
+            onExplosion
+            onItemDrop
+            onItemPickup
+            onVillagerInfected
+         */
+
+        @BehaviorToggle("reachLevel")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = -1, max = 100)
+        public int onReachLevel = -1;
+
+        @ConfigEntry.Gui.Tooltip
+        @BehaviorMessage(value = "reachLevel", isAdvanced = true)
+        public List<String> onReachLevelList = List.of("I have reached level %l");
     }
 
     public static class Filters

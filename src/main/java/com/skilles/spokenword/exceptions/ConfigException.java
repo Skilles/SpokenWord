@@ -1,6 +1,6 @@
 package com.skilles.spokenword.exceptions;
 
-public class ConfigException extends SpokenWordException
+public final class ConfigException extends SpokenWordException
 {
 
     public ConfigException(String message, Throwable thrown)
@@ -10,7 +10,7 @@ public class ConfigException extends SpokenWordException
 
     public ConfigException(String message)
     {
-        super("ConfigException : " + message);
+        super("[Config] : " + message);
     }
 
 }

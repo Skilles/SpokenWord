@@ -12,4 +12,5 @@ public @interface BehaviorMessage
 
     String value();
 
+    boolean isAdvanced() default false;
 }

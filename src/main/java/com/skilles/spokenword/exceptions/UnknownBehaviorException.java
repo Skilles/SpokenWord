@@ -1,6 +1,6 @@
 package com.skilles.spokenword.exceptions;
 
-public class UnknownBehaviorException extends ConfigException
+public final class UnknownBehaviorException extends BehaviorException
 {
 
     public UnknownBehaviorException(String id)

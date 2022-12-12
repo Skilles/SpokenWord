@@ -1,6 +1,5 @@
 package com.skilles.spokenword;
 
-import com.skilles.spokenword.config.ConfigManager;
 import com.skilles.spokenword.config.SWConfig;
 import com.skilles.spokenword.config.SWConfigData;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -29,13 +28,13 @@ public class SpokenWord implements ModInitializer
 
         AutoConfig.getConfigHolder(SWConfigData.class).registerSaveListener((manager, data) ->
         {
-            ConfigManager.onSaveConfig(manager, data);
+            SWConfig.onSaveConfig(manager, data);
             return InteractionResult.SUCCESS;
         });
 
         AutoConfig.getConfigHolder(SWConfigData.class).registerLoadListener((manager, newData) ->
         {
-            ConfigManager.onLoadConfig(manager, newData);
+            SWConfig.onLoadConfig(manager, newData);
             return InteractionResult.SUCCESS;
         });
     }

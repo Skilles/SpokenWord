@@ -1,4 +1,4 @@
-package com.skilles.spokenword.behaviors;
+package com.skilles.spokenword.behaviors.regex;
 
 import java.util.HashMap;
 import java.util.Map;

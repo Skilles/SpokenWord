@@ -1,15 +1,14 @@
 package com.skilles.spokenword.config;
 
-import com.skilles.spokenword.config.custom.entity.ListModes;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.EntityType;
-
-import java.util.Collection;
+import com.skilles.spokenword.SpokenWord;
+import com.skilles.spokenword.SpokenWordClient;
+import me.shedaniel.autoconfig.ConfigHolder;
 
 public class SWConfig
 {
-
     private static SWConfigData CONFIG;
+
+    private SWConfig() {}
 
     public static void set(SWConfigData config)
     {
@@ -21,42 +20,16 @@ public class SWConfig
         return CONFIG;
     }
 
-    public static boolean isEnabled()
+    public static void onLoadConfig(ConfigHolder<SWConfigData> manager, SWConfigData newData)
     {
-        return CONFIG.general.globalEnable && isEnabledServer();
+        SpokenWord.log("Config loaded");
+        CONFIG = newData;
     }
 
-    public static boolean isEnabledServer()
+    public static void onSaveConfig(ConfigHolder<SWConfigData> manager, SWConfigData data)
     {
-        var whitelistedServers = CONFIG.general.ipFilter;
-
-        if (whitelistedServers.size() == 0)
-        {
-            return true;
-        }
-
-        var server = Minecraft.getInstance().getCurrentServer();
-
-        if (server == null)
-        {
-            return true;
-        }
-
-        return whitelistedServers.contains(server.ip);
-    }
-
-    public static void saveEntities(Collection<EntityType<?>> entities, ListModes mode)
-    {
-        var entityNames = ConfigUtil.entitiesToKeys(entities);
-
-        if (mode.equals(ListModes.ALL))
-        {
-            CONFIG.filters.onEntityDeathFilter = entityNames;
-        }
-        else
-        {
-            CONFIG.filters.onDeathPveFilter = entityNames;
-        }
+        SpokenWord.log("Config saved");
+        SpokenWordClient.BEHAVIOR_MANAGER.init(data);
     }
 
 }

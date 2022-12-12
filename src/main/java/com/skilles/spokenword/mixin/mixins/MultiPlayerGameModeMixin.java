@@ -2,16 +2,15 @@ package com.skilles.spokenword.mixin.mixins;
 
 import com.skilles.spokenword.mixin.handlers.MixinCommands;
 import com.skilles.spokenword.mixin.handlers.MixinUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.core.BlockPos;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(MultiPlayerGameMode.class)
 public class MultiPlayerGameModeMixin
 {
