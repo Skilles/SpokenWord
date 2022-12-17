@@ -1,28 +1,20 @@
-package com.skilles.spokenword.config.custom.entity;
+package com.skilles.spokenword.config.custom.dropdown;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skilles.spokenword.SpokenWord;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.util.Collection;
 
-public class EntityTopCell extends DropdownBoxEntry.DefaultSelectionTopCellElement<EntityType<?>>
+public class MultiSelectionTopCellElement<T> extends DropdownBoxEntry.DefaultSelectionTopCellElement<T>
 {
-
-    private String cachedValue;
 
     private boolean isEdited;
 
-    private boolean resetSelections;
-
-    // The top cell will display the selection count
-    public EntityTopCell(int initialCount)
-    {
-        super(SpokenWord.DEFAULT_ENTITY, (string) -> SpokenWord.DEFAULT_ENTITY, (entity) -> Component.empty());
-        cachedValue = String.valueOf(initialCount);
-    }
+    private FormattedCharSequence cachedCount;
 
     @Override
     public boolean isEdited()
@@ -30,17 +22,25 @@ public class EntityTopCell extends DropdownBoxEntry.DefaultSelectionTopCellEleme
         return isEdited;
     }
 
+    private boolean resetSelections;
+
+    public MultiSelectionTopCellElement(int initialCount, T defaultValue)
+    {
+        super(defaultValue, (string) -> defaultValue, (entity) -> Component.empty());
+        cachedCount = FormattedCharSequence.forward(String.valueOf(initialCount), Style.EMPTY.withBold(true));
+    }
+
     @Override
     public void render(PoseStack matrices, int mouseX, int mouseY, int x, int y, int width, int height, float delta)
     {
-        // this.textFieldWidget.setValue(cachedValue);
+        // Display the selection count
+        Minecraft.getInstance()
+                .font
+                .drawShadow(matrices, cachedCount, (float)(x - 20), (float)(y + 6), 16777215);
 
         super.render(matrices, mouseX, mouseY, x, y, width, height, delta);
     }
 
-    /**
-     * Cursed way to have sorted selections
-     */
     @Override
     public Component getSearchTerm()
     {
@@ -48,11 +48,6 @@ public class EntityTopCell extends DropdownBoxEntry.DefaultSelectionTopCellEleme
         {
             resetSelections = false;
             return Component.empty();
-        }
-
-        if (isKeywordEmpty())
-        {
-            return Component.literal("\0");
         }
 
         return super.getSearchTerm();
@@ -76,9 +71,10 @@ public class EntityTopCell extends DropdownBoxEntry.DefaultSelectionTopCellEleme
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    public void setValue(Collection<EntityType<?>> entities)
+    public void setValue(Collection<T> selections)
     {
-        this.cachedValue = String.valueOf(entities.size());
+        this.cachedCount = FormattedCharSequence.forward(String.valueOf(selections.size()),
+                Style.EMPTY.withBold(true));
         this.isEdited = true;
     }
 

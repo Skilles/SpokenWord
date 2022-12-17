@@ -4,8 +4,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.skilles.spokenword.behaviors.BehaviorManager;
 import com.skilles.spokenword.config.SWConfig;
 import com.skilles.spokenword.config.SWConfigData;
-import com.skilles.spokenword.config.custom.entity.EntityDropdown;
-import com.skilles.spokenword.config.custom.entity.EntityGuiProvider;
+import com.skilles.spokenword.config.custom.dropdown.entity.EntityDropdown;
+import com.skilles.spokenword.config.custom.dropdown.entity.EntitySelectionGuiProvider;
 import com.skilles.spokenword.config.custom.regex.RegexGuiProvider;
 import com.skilles.spokenword.config.custom.regex.RegexList;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
@@ -32,7 +32,7 @@ public class SpokenWordClient implements ClientModInitializer, ModMenuApi
     {
         GuiRegistry registry = AutoConfig.getGuiRegistry(SWConfigData.class);
 
-        registry.registerAnnotationProvider(new EntityGuiProvider(), EntityDropdown.class);
+        registry.registerAnnotationProvider(new EntitySelectionGuiProvider(), EntityDropdown.class);
         registry.registerAnnotationProvider(new RegexGuiProvider(), RegexList.class);
 
         BEHAVIOR_MANAGER = new BehaviorManager();
