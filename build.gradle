@@ -1,7 +1,7 @@
 plugins {
 	id 'maven-publish'
 	id 'idea'
-	id "org.sonarqube" version "3.4.0.2513"
+	id "org.sonarqube" version "4.2.1.3168"
 	alias(libs.plugins.quilt.loom)
 	alias(libs.plugins.quilt.flower)
 }
