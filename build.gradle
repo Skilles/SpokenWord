@@ -22,6 +22,19 @@ subprojects {
             parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2023.09.03@zip")
         }
     }
+
+    repositories {
+        maven {
+            name 'Sonar Maven'
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+        repositories {
+            maven {
+                name 'Xander Maven'
+                url 'https://maven.isxander.dev/releases'
+            }
+        }
+    }
 }
 
 allprojects {
