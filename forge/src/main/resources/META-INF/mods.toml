@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+issueTrackerURL = "https://github.com/Skilles/SpokenWord/issues"
+license = "MIT"
 
 [[mods]]
 modId = "spokenword"
 version = "${version}"
 displayName = "Spoken Word"
-authors = "Me!"
+authors = "Skilles"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Send chat messages or commands on certain game events
 '''
 #logoFile = ""
 
@@ -36,7 +36,7 @@ side = "BOTH"
 
 [[dependencies.spokenword]]
 modId = "yet_another_config_lib_v3"
-mandatory = true
+mandatory = false
 versionRange = "[3.2.1+1.20,)"
 ordering = "NONE"
 side = "CLIENT"

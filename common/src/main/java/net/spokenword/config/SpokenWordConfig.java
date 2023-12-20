@@ -16,6 +16,8 @@ import java.util.List;
 
 public class SpokenWordConfig {
 
+    public static final String FILE_NAME = "spokenword.json5";
+
     private final String MAIN_CATEGORY = "main";
     private final String TOGGLES_CATEGORY = "toggles";
     private final String FILTERS_CATEGORY = "filters";

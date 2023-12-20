@@ -6,8 +6,8 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.spokenword.config.ConfigScreenFactory;
 import net.spokenword.config.SpokenWordConfig;
-import net.spokenword.config.SpokenWordConfigBuilder;
 import net.spokenword.config.mobhead.MobHeadReloadListener;
 
 import java.util.logging.Logger;
@@ -37,7 +37,7 @@ public class SpokenWord {
             return EventResult.interruptFalse();
         });
 
-        Platform.getMod(MOD_ID).registerConfigurationScreen(SpokenWordConfigBuilder::createScreen);
+        Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.create());
 
         MobHeadReloadListener.register();
     }

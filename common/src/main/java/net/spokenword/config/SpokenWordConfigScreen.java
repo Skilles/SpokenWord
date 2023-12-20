@@ -14,11 +14,9 @@ import net.spokenword.config.serializer.OptionalSerializer;
 
 import java.util.Optional;
 
-public class SpokenWordConfigBuilder {
+public class SpokenWordConfigScreen {
 
-    private static final String CONFIG_FILE_NAME = "spokenword.json5";
-
-    public static ConfigClassHandler<SpokenWordConfig> HANDLER =
+    private static ConfigClassHandler<SpokenWordConfig> HANDLER =
             ConfigClassHandler.createBuilder(SpokenWordConfig.class)
                               .id(new ResourceLocation(SpokenWord.MOD_ID))
                               .serializer(config -> GsonConfigSerializerBuilder.create(config)
@@ -27,7 +25,7 @@ public class SpokenWordConfigBuilder {
                                                                                        .registerTypeAdapter(Block.class, new BlockSerializer())
                                                                                        .registerTypeAdapter(EntityType.class, new EntityTypeSerializer())
                                                                                        .registerTypeAdapter(Optional.class, new OptionalSerializer())) // this serializer is unused but otherwise block serializer does not get used???
-                                                                               .setPath(Platform.getConfigFolder().resolve(CONFIG_FILE_NAME))
+                                                                               .setPath(Platform.getConfigFolder().resolve(SpokenWordConfig.FILE_NAME))
                                                                                .build())
                               .build();
 
@@ -46,7 +44,7 @@ public class SpokenWordConfigBuilder {
         });
     }*/
 
-    public static Screen createScreen(Screen parent) {
+    public static Screen create(Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);
     }
 }

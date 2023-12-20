@@ -47,5 +47,9 @@
   "yacl3.config.minecraft:spokenword.onMessageFilter": "Message",
   "yacl3.config.minecraft:spokenword.onMessageEnabled": "Message",
   "yacl3.config.minecraft:spokenword.onRespawnMessage": "Respawn",
-  "yacl3.config.minecraft:spokenword.onRespawnEnabled": "Respawn"
+  "yacl3.config.minecraft:spokenword.onRespawnEnabled": "Respawn",
+  "spokenword.config.yacl_missing": "YACL is missing!",
+  "spokenword.config.yacl_missing.desc": "SpokenWord uses Yet Another Config Library (YACL) to generate its config GUI. Please install YACL to use the config GUI. Alternatively, you can edit the config file manually at: \n%s",
+  "spokenword.config.yacl_missing.open_config": "Open Config Folder",
+  "spokenword.config.yacl_missing.download_yacl": "Download YACL"
 }

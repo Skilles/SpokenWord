@@ -3,17 +3,18 @@
   "id": "spokenword",
   "version": "${version}",
   "name": "Spoken Word",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Send chat messages or commands on certain game events",
   "authors": [
-    "Me!"
+    "Skilles"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/spoken-word",
+    "sources": "https://github.com/Skilles/SpokenWord",
+    "issues": "https://github.com/Skilles/SpokenWord/issues"
   },
-  "license": "Insert License Here",
+  "license": "MIT",
   "icon": "assets/spokenword/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "net.spokenword.fabric.SpokenWordFabric"
@@ -26,7 +27,9 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.20.1",
-    "architectury": ">=9.1.12",
+    "architectury": ">=9.1.12"
+  },
+  "recommends": {
     "yet_another_config_lib_v3": "*"
   }
 }
