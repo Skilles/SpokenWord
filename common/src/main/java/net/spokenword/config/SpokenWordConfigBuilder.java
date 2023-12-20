@@ -1,26 +1,33 @@
 package net.spokenword.config;
 
-import com.google.gson.GsonBuilder;
 import dev.architectury.platform.Platform;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 import net.spokenword.SpokenWord;
-import net.spokenword.config.autoconfig.AutoConfig;
+import net.spokenword.config.serializer.BlockSerializer;
+import net.spokenword.config.serializer.EntityTypeSerializer;
+import net.spokenword.config.serializer.OptionalSerializer;
+
+import java.util.Optional;
 
 public class SpokenWordConfigBuilder
 {
-    private static final String CONFIG_FILE_NAME = "spokenword.json";
+
+    private static final String CONFIG_FILE_NAME = "spokenword.json5";
 
     public static ConfigClassHandler<SpokenWordConfig> HANDLER =
             ConfigClassHandler.createBuilder(SpokenWordConfig.class)
                     .id(new ResourceLocation(SpokenWord.MOD_ID))
                     .serializer(config -> GsonConfigSerializerBuilder.create(config)
                             .setJson5(true)
-                            .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
+                            .appendGsonBuilder(builder -> builder
+                                    .registerTypeAdapter(Block.class, new BlockSerializer())
+                                    .registerTypeAdapter(EntityType.class, new EntityTypeSerializer())
+                                    .registerTypeAdapter(Optional.class, new OptionalSerializer())) // this serializer is unused but otherwise block serializer does not get used???
                             .setPath(Platform.getConfigFolder().resolve(CONFIG_FILE_NAME))
                             .build())
                     .build();
