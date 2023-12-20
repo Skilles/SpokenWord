@@ -41,7 +41,7 @@ public class AbstractRegistryControllerElement<T> extends AbstractDropdownContro
         List<ResourceLocation> identifiers = controller.getMatchingIdentifiers(inputField).toList();
         currentItem = controller.registryHelper.getFromName(inputField, null);
         for (ResourceLocation identifier : identifiers) {
-            matchingItems.put(identifier, controller.getRegistry().get(identifier));
+            matchingItems.put(identifier, controller.registry.get(identifier));
         }
         return identifiers;
     }
@@ -58,7 +58,7 @@ public class AbstractRegistryControllerElement<T> extends AbstractDropdownContro
 
     @Override
     public String getString(ResourceLocation identifier) {
-        return identifier.toString();
+        return controller.displayFormatter().apply(controller.registry.get(identifier)).getString();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class AbstractRegistryControllerElement<T> extends AbstractDropdownContro
             return super.getValueText();
 
         if (inputFieldFocused)
-            return Component.literal(inputField);
+            return Component.translatableWithFallback(inputField, inputField);
 
         return controller.displayFormatter().apply(controller.option().pendingValue());
     }

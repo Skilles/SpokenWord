@@ -20,10 +20,6 @@ public abstract class AbstractRegistryController<T> extends AbstractDropdownCont
 {
     // TODO: Add selected item customization
 
-    protected abstract DefaultedRegistry<T> getRegistry();
-
-    protected abstract Function<T, String> alternativeKey();
-
     protected abstract Function<T, Component> displayFormatter();
 
     protected int getDecorationPadding() {
@@ -46,21 +42,29 @@ public abstract class AbstractRegistryController<T> extends AbstractDropdownCont
     {
     }
 
-    public RegistryHelper<T> registryHelper = new RegistryHelper<>(getRegistry());
+    protected Function<T, String> alternativeKey() {
+        return displayFormatter().andThen(Component::getString);
+    }
+
+    public final DefaultedRegistry<T> registry;
+
+    public final RegistryHelper<T> registryHelper;
 
 
     /**
-     * Constructs an item controller
+     * Constructs a dropdown controller with registry entries as the dropdown entries.
      *
      * @param option bound option
      */
-    public AbstractRegistryController(Option<T> option) {
-        super(option);
+    public AbstractRegistryController(Option<T> option, DefaultedRegistry<T> registry) {
+        super(option, registry.entrySet().stream().map(entry -> entry.getKey().toString()).toList(), false, false);
+        this.registry = registry;
+        this.registryHelper = new RegistryHelper<>(registry);
     }
 
     @Override
     public String getString() {
-        return getRegistry().getKey(option.pendingValue()).toString();
+        return registry.getKey(option.pendingValue()).toString();
     }
 
     @Override
@@ -79,7 +83,7 @@ public abstract class AbstractRegistryController<T> extends AbstractDropdownCont
 
     @Override
     public boolean isValueValid(String value) {
-        return registryHelper.isRegistered(value);
+        return registryHelper.isRegistered(value, alternativeKey(), optionFilter());
     }
 
     public Stream<ResourceLocation> getMatchingIdentifiers(String value) {

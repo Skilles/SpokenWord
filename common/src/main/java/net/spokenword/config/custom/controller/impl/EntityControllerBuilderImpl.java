@@ -1,9 +1,11 @@
-package net.spokenword.config.custom.controller;
+package net.spokenword.config.custom.controller.impl;
 
 import dev.isxander.yacl3.api.Controller;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.impl.controller.AbstractControllerBuilderImpl;
 import net.minecraft.world.entity.EntityType;
+import net.spokenword.config.custom.controller.EntityController;
+import net.spokenword.config.custom.controller.EntityControllerBuilder;
 
 public class EntityControllerBuilderImpl extends AbstractControllerBuilderImpl<EntityType<?>> implements EntityControllerBuilder
 {
@@ -11,7 +13,7 @@ public class EntityControllerBuilderImpl extends AbstractControllerBuilderImpl<E
 
     private boolean hidePassives = false;
 
-    protected EntityControllerBuilderImpl(Option<EntityType<?>> option)
+    public EntityControllerBuilderImpl(Option<EntityType<?>> option)
     {
         super(option);
     }

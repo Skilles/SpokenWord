@@ -7,9 +7,13 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.spokenword.SpokenWord;
 import net.spokenword.config.autoconfig.*;
 
@@ -36,8 +40,21 @@ public class SpokenWordConfig
     public List<EntityType<?>> autogenEntityValues = List.of(EntityType.ZOMBIE);
 
     @AutoGen(category = MAIN_CATEGORY)
+    @ListGroup(controllerFactory = EntityListGroup.class, valueFactory = EntityListGroup.class)
+    @TargetEntity(hideHostiles = true)
+    public List<EntityType<?>> passiveMobs = List.of(EntityType.BEE);
+
+    @AutoGen(category = MAIN_CATEGORY)
+    @ListGroup(controllerFactory = EntityListGroup.class, valueFactory = EntityListGroup.class)
+    public List<EntityType<?>> allMobs = List.of(EntityType.ALLAY);
+
+    @AutoGen(category = MAIN_CATEGORY)
+    @ListGroup(controllerFactory = BlockListGroup.class, valueFactory = BlockListGroup.class)
+    public List<Block> autogenBlockValues = List.of(Blocks.GRASS_BLOCK);
+
+    @AutoGen(category = MAIN_CATEGORY)
     @ListGroup(controllerFactory = ItemListGroup.class, valueFactory = ItemListGroup.class)
-    public List<Item> autogenStringValues = List.of(Item.byId(1));
+    public List<Item> autogenStringValues = List.of(Items.NETHER_STAR);
 
     @AutoGen(category = MAIN_CATEGORY)
     @MasterTickBox(value = "autogenStringValues")

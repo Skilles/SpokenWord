@@ -18,12 +18,22 @@ public class RegistryHelper<T> {
         this.registry = registry;
     }
 
-    public boolean isRegistered(String identifier) {
+    public boolean isRegistered(String identifier, Function<T, String> alternativeKeyGetter, @Nullable Predicate<T> filter) {
         try {
+            // Test raw identifier
             ResourceLocation itemIdentifier = new ResourceLocation(identifier.toLowerCase());
-            return registry.containsKey(itemIdentifier);
+            return registry.containsKey(itemIdentifier) && (filter == null || filter.test(registry.get(itemIdentifier)));
         } catch (ResourceLocationException e) {
-            return false;
+            // Test alternative key
+            return registry.entrySet().stream()
+                    .filter(entry -> filter == null || filter.test(entry.getValue()))
+                    .map(entry ->
+                    {
+                        String applied = alternativeKeyGetter.apply(entry.getValue());
+                        System.out.printf("Applied: %s | Identifier: %s%n", applied, identifier);
+                        return applied;
+                    })
+                    .anyMatch(key -> key.equalsIgnoreCase(identifier));
         }
     }
 
@@ -106,7 +116,7 @@ public class RegistryHelper<T> {
         if (sep == -1) {
             filterPredicate = identifier ->
                     identifier.getPath().contains(value)
-                            || alternativeKeyGetter.apply(registry.get(identifier)).contains(value.toLowerCase());
+                            || alternativeKeyGetter.apply(registry.get(identifier)).toLowerCase().contains(value.toLowerCase());
         } else {
             String namespace = value.substring(0, sep);
             String path = value.substring(sep + 1);
