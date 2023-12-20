@@ -7,13 +7,13 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface AutoConfigOption
-{
-    public String name();
+public @interface AutoConfigOption {
 
-    public String description() default "";
+    String name();
 
-    public boolean slider() default false;
+    String description() default "";
 
-    public boolean tickbox() default false;
+    boolean slider() default false;
+
+    boolean tickbox() default false;
 }

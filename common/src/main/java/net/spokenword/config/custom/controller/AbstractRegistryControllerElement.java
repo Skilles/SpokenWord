@@ -11,29 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AbstractRegistryControllerElement<T> extends AbstractDropdownControllerElement<T, ResourceLocation>
-{
+public class AbstractRegistryControllerElement<T> extends AbstractDropdownControllerElement<T, ResourceLocation> {
+
     private final AbstractRegistryController<T> controller;
     protected T currentItem = null;
     protected Map<ResourceLocation, T> matchingItems = new HashMap<>();
 
-
     public AbstractRegistryControllerElement(AbstractRegistryController<T> control, YACLScreen screen, Dimension<Integer> dim) {
         super(control, screen, dim);
         this.controller = control;
-    }
-
-    @Override
-    protected void drawValueText(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        var oldDimension = getDimension();
-        setDimension(getDimension().withWidth(getDimension().width() - getDecorationPadding()));
-        super.drawValueText(graphics, mouseX, mouseY, delta);
-        setDimension(oldDimension);
-        if (currentItem != null) {
-            var x = getDimension().xLimit() - getDecorationPadding() - 2;
-            var y = getDimension().y() + 2;
-            controller.renderValueEntry(graphics, currentItem, x, y, delta);
-        }
     }
 
     @Override
@@ -44,6 +30,11 @@ public class AbstractRegistryControllerElement<T> extends AbstractDropdownContro
             matchingItems.put(identifier, controller.registry.get(identifier));
         }
         return identifiers;
+    }
+
+    @Override
+    protected int getDropdownEntryPadding() {
+        return controller.getDropdownEntryPadding();
     }
 
     @Override
@@ -67,23 +58,33 @@ public class AbstractRegistryControllerElement<T> extends AbstractDropdownContro
     }
 
     @Override
-    protected int getDropdownEntryPadding() {
-        return controller.getDropdownEntryPadding();
+    protected void drawValueText(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        var oldDimension = getDimension();
+        setDimension(getDimension().withWidth(getDimension().width() - getDecorationPadding()));
+        super.drawValueText(graphics, mouseX, mouseY, delta);
+        setDimension(oldDimension);
+        if (currentItem != null) {
+            var x = getDimension().xLimit() - getDecorationPadding() - 2;
+            var y = getDimension().y() + 2;
+            controller.renderValueEntry(graphics, currentItem, x, y, delta);
+        }
+    }
+
+    @Override
+    protected Component getValueText() {
+        if (inputField.isEmpty() || controller == null) {
+            return super.getValueText();
+        }
+
+        if (inputFieldFocused) {
+            return Component.translatableWithFallback(inputField, inputField);
+        }
+
+        return controller.displayFormatter().apply(controller.option().pendingValue());
     }
 
     @Override
     protected int getControlWidth() {
         return super.getControlWidth() + getDecorationPadding();
-    }
-
-    @Override
-    protected Component getValueText() {
-        if (inputField.isEmpty() || controller == null)
-            return super.getValueText();
-
-        if (inputFieldFocused)
-            return Component.translatableWithFallback(inputField, inputField);
-
-        return controller.displayFormatter().apply(controller.option().pendingValue());
     }
 }

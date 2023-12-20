@@ -7,37 +7,32 @@ import net.minecraft.world.entity.EntityType;
 import net.spokenword.config.custom.controller.EntityController;
 import net.spokenword.config.custom.controller.EntityControllerBuilder;
 
-public class EntityControllerBuilderImpl extends AbstractControllerBuilderImpl<EntityType<?>> implements EntityControllerBuilder
-{
+public class EntityControllerBuilderImpl extends AbstractControllerBuilderImpl<EntityType<?>> implements EntityControllerBuilder {
+
     private boolean hideHostiles = false;
 
     private boolean hidePassives = false;
 
-    public EntityControllerBuilderImpl(Option<EntityType<?>> option)
-    {
+    public EntityControllerBuilderImpl(Option<EntityType<?>> option) {
         super(option);
     }
 
     @Override
-    public Controller<EntityType<?>> build()
-    {
+    public Controller<EntityType<?>> build() {
         return new EntityController(option, hideHostiles, hidePassives);
     }
 
     @Override
-    public EntityControllerBuilder hideHostiles()
-    {
+    public EntityControllerBuilder hideHostiles() {
         hideHostiles = true;
 
         return this;
     }
 
     @Override
-    public EntityControllerBuilder hidePassives()
-    {
+    public EntityControllerBuilder hidePassives() {
         hidePassives = true;
 
         return this;
     }
-
 }

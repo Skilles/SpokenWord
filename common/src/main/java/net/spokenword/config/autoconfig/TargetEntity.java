@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface TargetEntity
-{
+public @interface TargetEntity {
+
     boolean hideHostiles() default false;
 
     boolean hidePassives() default false;

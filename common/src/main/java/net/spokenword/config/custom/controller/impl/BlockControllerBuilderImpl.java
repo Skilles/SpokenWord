@@ -7,18 +7,14 @@ import net.minecraft.world.level.block.Block;
 import net.spokenword.config.custom.controller.BlockController;
 import net.spokenword.config.custom.controller.BlockControllerBuilder;
 
-public class BlockControllerBuilderImpl extends AbstractControllerBuilderImpl<Block> implements BlockControllerBuilder
-{
+public class BlockControllerBuilderImpl extends AbstractControllerBuilderImpl<Block> implements BlockControllerBuilder {
 
-    public BlockControllerBuilderImpl(Option<Block> option)
-    {
+    public BlockControllerBuilderImpl(Option<Block> option) {
         super(option);
     }
 
     @Override
-    public Controller<Block> build()
-    {
+    public Controller<Block> build() {
         return new BlockController(option);
     }
-
 }

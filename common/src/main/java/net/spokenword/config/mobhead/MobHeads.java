@@ -12,8 +12,8 @@ import net.spokenword.SpokenWord;
 
 import java.util.HashMap;
 
-public class MobHeads
-{
+public class MobHeads {
+
     private static final HashMap<EntityType<?>, MobHead> mobHeads = new HashMap<>();
 
     private static final HashMap<EntityType<?>, Item> mobHeadItems = new HashMap<>() {
@@ -30,17 +30,14 @@ public class MobHeads
 
     private static final ItemStack defaultMobHead = Items.PLAYER_HEAD.getDefaultInstance();
 
-    public static ItemStack getMobHead(EntityType<?> type)
-    {
+    public static ItemStack getMobHead(EntityType<?> type) {
 
 
-        if (mobHeadItems.containsKey(type))
-        {
+        if (mobHeadItems.containsKey(type)) {
             return mobHeadItems.get(type).getDefaultInstance();
         }
 
-        if (mobHeads.containsKey(type))
-        {
+        if (mobHeads.containsKey(type)) {
             return mobHeads.get(type).toItemStack();
         }
 
@@ -58,6 +55,7 @@ public class MobHeads
     }
 
     public record MobHead(int[] uuid, String data) {
+
         public ItemStack toItemStack() {
             var itemStack = Items.PLAYER_HEAD.getDefaultInstance();
 

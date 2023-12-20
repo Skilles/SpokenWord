@@ -14,8 +14,8 @@ import net.spokenword.config.autoconfig.StringListGroup;
 
 import java.util.List;
 
-public class SpokenWordConfig
-{
+public class SpokenWordConfig {
+
     private final String MAIN_CATEGORY = "main";
     private final String TOGGLES_CATEGORY = "toggles";
     private final String FILTERS_CATEGORY = "filters";

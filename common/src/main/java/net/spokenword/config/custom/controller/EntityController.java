@@ -12,28 +12,20 @@ import net.spokenword.config.mobhead.MobHeads;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class EntityController extends AbstractRegistryController<EntityType<?>>
-{
+public class EntityController extends AbstractRegistryController<EntityType<?>> {
+
     private final boolean hideHostiles;
 
     private final boolean hidePassives;
 
-    public EntityController(Option<EntityType<?>> option, boolean hideHostiles, boolean hidePassives)
-    {
+    public EntityController(Option<EntityType<?>> option, boolean hideHostiles, boolean hidePassives) {
         super(option, BuiltInRegistries.ENTITY_TYPE);
         this.hideHostiles = hideHostiles;
         this.hidePassives = hidePassives;
     }
 
     @Override
-    protected Function<EntityType<?>, Component> displayFormatter()
-    {
-        return EntityType::getDescription;
-    }
-
-    @Override
-    protected Predicate<EntityType<?>> optionFilter()
-    {
+    protected Predicate<EntityType<?>> optionFilter() {
         return (type) ->
         {
             var category = type.getCategory();
@@ -42,34 +34,31 @@ public class EntityController extends AbstractRegistryController<EntityType<?>>
             {
                 return false;
             }
-            if (hideHostiles && !category.isFriendly())
-            {
+            if (hideHostiles && !category.isFriendly()) {
                 return false;
             }
 
-            if (hidePassives && category.isFriendly())
-            {
-                return false;
-            }
-            return true;
+            return !hidePassives || !category.isFriendly();
         };
     }
 
     @Override
-    protected void renderValueEntry(GuiGraphics graphics, EntityType<?> entityType, int x, int y, float delta)
-    {
-        graphics.renderFakeItem(MobHeads.getMobHead(entityType), x, y);
+    protected Function<EntityType<?>, Component> displayFormatter() {
+        return EntityType::getDescription;
     }
 
     @Override
-    protected void renderDropdownEntry(GuiGraphics graphics, ResourceLocation identifier, int x, int y)
-    {
+    protected int getDecorationPadding() {
+        return 16;
+    }
+
+    @Override
+    protected void renderDropdownEntry(GuiGraphics graphics, ResourceLocation identifier, int x, int y) {
         renderValueEntry(graphics, registry.get(identifier), x, y, 0);
     }
 
     @Override
-    protected int getDecorationPadding()
-    {
-        return 16;
+    protected void renderValueEntry(GuiGraphics graphics, EntityType<?> entityType, int x, int y, float delta) {
+        graphics.renderFakeItem(MobHeads.getMobHead(entityType), x, y);
     }
 }

@@ -9,17 +9,15 @@ import dev.isxander.yacl3.config.v2.api.autogen.OptionAccess;
 
 import java.util.List;
 
-public class StringListGroup implements ListGroup.ValueFactory<String>, ListGroup.ControllerFactory<String>
-{
+public class StringListGroup implements ListGroup.ValueFactory<String>, ListGroup.ControllerFactory<String> {
+
     @Override
-    public String provideNewValue()
-    {
+    public String provideNewValue() {
         return "";
     }
 
     @Override
-    public ControllerBuilder<String> createController(ListGroup annotation, ConfigField<List<String>> field, OptionAccess storage, Option<String> option)
-    {
+    public ControllerBuilder<String> createController(ListGroup annotation, ConfigField<List<String>> field, OptionAccess storage, Option<String> option) {
         return StringControllerBuilder.create(option);
     }
 }

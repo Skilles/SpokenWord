@@ -11,19 +11,15 @@ import net.spokenword.config.custom.controller.BlockControllerBuilder;
 
 import java.util.List;
 
-public class BlockListGroup implements ListGroup.ValueFactory<Block>, ListGroup.ControllerFactory<Block>
-{
+public class BlockListGroup implements ListGroup.ValueFactory<Block>, ListGroup.ControllerFactory<Block> {
 
     @Override
-    public ControllerBuilder<Block> createController(ListGroup annotation, ConfigField<List<Block>> field, OptionAccess storage, Option<Block> option)
-    {
+    public ControllerBuilder<Block> createController(ListGroup annotation, ConfigField<List<Block>> field, OptionAccess storage, Option<Block> option) {
         return BlockControllerBuilder.create(option);
     }
 
     @Override
-    public Block provideNewValue()
-    {
+    public Block provideNewValue() {
         return Blocks.GRASS_BLOCK;
     }
-
 }

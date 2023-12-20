@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface AutoConfigCategory
-{
-    public String name();
+public @interface AutoConfigCategory {
 
-    public String tooltip() default "";
+    String name();
+
+    String tooltip() default "";
 }

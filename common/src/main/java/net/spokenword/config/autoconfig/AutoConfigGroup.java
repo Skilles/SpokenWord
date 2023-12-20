@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface AutoConfigGroup
-{
-    public String name();
+public @interface AutoConfigGroup {
 
-    public String description() default "";
+    String name();
+
+    String description() default "";
 }

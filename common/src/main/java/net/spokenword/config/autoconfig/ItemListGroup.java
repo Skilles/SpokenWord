@@ -10,19 +10,15 @@ import net.minecraft.world.item.Item;
 
 import java.util.List;
 
-public class ItemListGroup implements ListGroup.ValueFactory<Item>, ListGroup.ControllerFactory<Item>
-{
+public class ItemListGroup implements ListGroup.ValueFactory<Item>, ListGroup.ControllerFactory<Item> {
 
     @Override
-    public ControllerBuilder<Item> createController(ListGroup annotation, ConfigField<List<Item>> field, OptionAccess storage, Option<Item> option)
-    {
+    public ControllerBuilder<Item> createController(ListGroup annotation, ConfigField<List<Item>> field, OptionAccess storage, Option<Item> option) {
         return ItemControllerBuilder.create(option);
     }
 
     @Override
-    public Item provideNewValue()
-    {
+    public Item provideNewValue() {
         return null;
     }
-
 }
