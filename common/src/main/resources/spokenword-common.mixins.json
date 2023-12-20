@@ -4,7 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-    "MixinTitleScreen"
+    "ChatListenerMixin",
+    "ClientLevelMixin",
+    "ClientPacketListenerMixin",
+    "ClientPlayerMixin",
+    "LivingEntityMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "mixins": [
   ],
