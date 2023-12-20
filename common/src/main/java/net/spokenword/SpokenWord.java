@@ -8,7 +8,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.spokenword.config.ConfigScreenFactory;
 import net.spokenword.config.SpokenWordConfig;
+import net.spokenword.config.SpokenWordConfigScreen;
+import net.spokenword.config.autoconfig.CustomListGroupImpl;
 import net.spokenword.config.mobhead.MobHeadReloadListener;
+import net.spokenword.core.behavior.BehaviorManager;
 
 import java.util.logging.Logger;
 
@@ -20,9 +23,13 @@ public class SpokenWord {
     // We can use this if we don't want to use DeferredRegister
     // public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
 
-    public static final SpokenWordConfig CONFIG = new SpokenWordConfig();
-
     public static final Logger LOGGER = Logger.getLogger(MOD_ID);
+
+    public static final BehaviorManager BEHAVIOR_MANAGER = new BehaviorManager();
+
+    public static SpokenWordConfig getConfig() {
+        return SpokenWordConfigScreen.getHandler().instance();
+    }
 
     public static void init() {
         EntityEvent.LIVING_DEATH.register((entity, source) ->
@@ -40,5 +47,6 @@ public class SpokenWord {
         Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.create());
 
         MobHeadReloadListener.register();
+        CustomListGroupImpl.register();
     }
 }
