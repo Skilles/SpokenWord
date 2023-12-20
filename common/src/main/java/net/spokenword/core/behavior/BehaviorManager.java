@@ -4,7 +4,6 @@ import net.spokenword.SpokenWord;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class BehaviorManager {
 
@@ -37,7 +36,7 @@ public class BehaviorManager {
     }
 
     public void refreshBehaviors() {
-        SpokenWord.LOGGER.log(Level.INFO, "Refreshing behaviors...");
+        SpokenWord.LOGGER.info("Refreshing behaviors...");
         INSTANCE.reset();
     }
 }

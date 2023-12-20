@@ -12,8 +12,8 @@ import net.spokenword.config.SpokenWordConfigScreen;
 import net.spokenword.config.autoconfig.CustomListGroupImpl;
 import net.spokenword.config.mobhead.MobHeadReloadListener;
 import net.spokenword.core.behavior.BehaviorManager;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Environment(EnvType.CLIENT)
 public class SpokenWord {
@@ -23,7 +23,7 @@ public class SpokenWord {
     // We can use this if we don't want to use DeferredRegister
     // public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
 
-    public static final Logger LOGGER = Logger.getLogger(MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger("Spoken Word");
 
     public static final BehaviorManager BEHAVIOR_MANAGER = new BehaviorManager();
 
@@ -48,5 +48,6 @@ public class SpokenWord {
 
         MobHeadReloadListener.register();
         CustomListGroupImpl.register();
+        BEHAVIOR_MANAGER.refreshBehaviors();
     }
 }

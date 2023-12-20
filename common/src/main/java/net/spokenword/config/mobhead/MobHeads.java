@@ -41,7 +41,7 @@ public class MobHeads {
             return mobHeads.get(type).toItemStack();
         }
 
-        SpokenWord.LOGGER.warning("No mob head found for entity type " + type.toShortString());
+        SpokenWord.LOGGER.warn("No mob head found for entity type " + type.toShortString());
 
         return defaultMobHead;
     }
