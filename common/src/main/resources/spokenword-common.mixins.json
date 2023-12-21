@@ -7,9 +7,10 @@
     "ChatListenerMixin",
     "ClientLevelMixin",
     "ClientPacketListenerMixin",
-    "ClientPlayerMixin",
     "LivingEntityMixin",
-    "MultiPlayerGameModeMixin"
+    "LocalPlayerMixin",
+    "MultiPlayerGameModeMixin",
+    "PlayerMixin"
   ],
   "mixins": [
   ],
