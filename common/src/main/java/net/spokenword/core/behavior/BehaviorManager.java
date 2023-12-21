@@ -36,7 +36,7 @@ public class BehaviorManager {
     }
 
     public void refreshBehaviors() {
-        SpokenWord.LOGGER.info("Refreshing behaviors...");
+        SpokenWord.getLogger().info("Refreshing behaviors...");
         INSTANCE.reset();
     }
 }

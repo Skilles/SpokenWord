@@ -31,7 +31,7 @@ public class MobHeadReloadListener implements PreparableReloadListener {
         {
             var mobHeadResource = resourceManager.getResource(MOB_HEADS);
             if (mobHeadResource.isEmpty()) {
-                SpokenWord.LOGGER.warn("Could not find mob heads resource file");
+                SpokenWord.getLogger().warn("Could not find mob heads resource file");
                 return;
             }
 
@@ -59,7 +59,7 @@ public class MobHeadReloadListener implements PreparableReloadListener {
                         var resourceLocation = new ResourceLocation(key);
 
                         if (!BuiltInRegistries.ENTITY_TYPE.containsKey(resourceLocation)) {
-                            SpokenWord.LOGGER.warn("Found invalid entry " + entry.getKey());
+                            SpokenWord.getLogger().warn("Found invalid entry " + entry.getKey());
                             continue;
                         }
 
@@ -67,7 +67,7 @@ public class MobHeadReloadListener implements PreparableReloadListener {
                         var mobHead = entry.getValue();
                         MobHeads.registerHead(entityType, mobHead);
                     } catch (ResourceLocationException e) {
-                        SpokenWord.LOGGER.warn("Could not find entity type " + entry.getKey());
+                        SpokenWord.getLogger().warn("Could not find entity type " + entry.getKey());
                     }
                 }
             } catch (IOException e) {

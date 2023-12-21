@@ -20,6 +20,7 @@ public class ConfigBehaviorFactory {
         var messagesFields = new HashMap<String, Field>();
         var filterFields = new HashMap<String, Field>();
 
+        // Find and separate the enabled, message, and filter fields
         for (var field : fields) {
             var name = field.getName();
 
@@ -41,8 +42,8 @@ public class ConfigBehaviorFactory {
             }
         }
 
+        // Create behaviors from the fields
         var behaviors = new ArrayList<Behavior<?>>();
-
         for (var id : messagesFields.keySet()) {
             var enabledField = enabledFields.get(id);
             var messagesField = messagesFields.get(id);

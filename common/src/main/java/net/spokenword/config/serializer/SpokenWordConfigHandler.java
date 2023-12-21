@@ -198,7 +198,7 @@ public class SpokenWordConfigHandler implements ConfigClassHandler<SpokenWordCon
     @Override
     public void save() {
         serializer().save();
-        SpokenWord.BEHAVIOR_MANAGER.refreshBehaviors();
+        SpokenWord.getBehaviorManager().refreshBehaviors();
     }
 
     private SpokenWordConfig createNewObject() {

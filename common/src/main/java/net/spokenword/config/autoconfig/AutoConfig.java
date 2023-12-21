@@ -4,11 +4,11 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
 import dev.isxander.yacl3.impl.controller.EnumControllerBuilderImpl;
 import net.minecraft.network.chat.Component;
+import net.spokenword.ReflectionUtil;
 import net.spokenword.config.SpokenWordConfig;
 import net.spokenword.config.exception.ConfigException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,7 +105,7 @@ public class AutoConfig {
 
     private static ListOption<Object> createListOption(Object root, Field field, List<Object> value, String name, String description) {
         var builder = ListOption.createBuilder();
-        var innerClass = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+        var innerClass = ReflectionUtil.getInnerClass(field);
 
         configureController(builder, innerClass);
 

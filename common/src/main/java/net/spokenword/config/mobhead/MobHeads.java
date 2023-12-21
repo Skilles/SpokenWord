@@ -31,8 +31,6 @@ public class MobHeads {
     private static final ItemStack defaultMobHead = Items.PLAYER_HEAD.getDefaultInstance();
 
     public static ItemStack getMobHead(EntityType<?> type) {
-
-
         if (mobHeadItems.containsKey(type)) {
             return mobHeadItems.get(type).getDefaultInstance();
         }
@@ -41,7 +39,7 @@ public class MobHeads {
             return mobHeads.get(type).toItemStack();
         }
 
-        SpokenWord.LOGGER.warn("No mob head found for entity type " + type.toShortString());
+        SpokenWord.getLogger().warn("No mob head found for entity type " + type.toShortString());
 
         return defaultMobHead;
     }

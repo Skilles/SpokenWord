@@ -130,6 +130,7 @@ public class SpokenWordConfig {
     @AutoGen(category = TOGGLES_CATEGORY, group = BLOCK_GROUP)
     @SerialEntry
     @MasterTickBox(value = "onBlockPlaceMessage")
+    @EventListenerOption(EventType.BLOCK_PLACE)
     @CustomName(SpokenWord.MOD_ID + ".config.onBlockPlaceEnabled")
     public boolean onBlockPlaceEnabled = false;
 

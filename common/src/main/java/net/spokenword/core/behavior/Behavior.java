@@ -1,14 +1,13 @@
 package net.spokenword.core.behavior;
 
-import net.spokenword.ReflectionUtil;
-import net.spokenword.core.event.EventContext;
-import net.spokenword.core.event.EventListener;
+import net.spokenword.core.event.AbstractEventListener;
 import net.spokenword.core.event.EventType;
+import net.spokenword.core.event.context.EventContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Behavior<T> extends EventListener {
+public class Behavior<T> extends AbstractEventListener<T> {
 
     private final List<String> messages;
 
@@ -25,32 +24,18 @@ public class Behavior<T> extends EventListener {
     }
 
     @Override
-    public void onEvent(EventContext event) {
-        validateEventContext(event);
-        if (filter != null && !filter.contains(event.filterable())) {
+    public void onEvent(EventType type, EventContext<T> event) {
+        if (filter != null && !filter.isEmpty() && !filter.contains(event.getFilterable())) {
             return;
         }
 
         for (String message : messages) {
-            BehaviorUtil.sendChatMessage(message, null);
+            BehaviorUtil.sendChatMessage(event.parseMessage(type, message), null);
         }
     }
 
     @Override
     public String toString() {
         return name;
-    }
-
-    private void validateEventContext(EventContext event) {
-        if (filter == null) {
-            return;
-        }
-        var filterable = event.filterable();
-        // Check if filterable class is the same as the inner filter class
-        try {
-            ReflectionUtil.getInnerClass(Behavior.class.getDeclaredField("filter")).isAssignableFrom(filterable.getClass());
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
