@@ -2,19 +2,23 @@ package net.spokenword.core.event.context;
 
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class KilledEventContext extends EntityEventContext {
 
-    private final Entity killed;
+    private final Entity killer;
 
-    public KilledEventContext(Entity killer, Entity killed) {
-        super(killer);
-        this.killed = killed;
+    public KilledEventContext(@Nullable Entity killer, Entity killed) {
+        super(killed);
+        this.killer = killer;
     }
 
     @Override
     @NotNull
     public String getTargetName() {
-        return killed.getDisplayName().getString();
+        if (killer == null) {
+            return "Unknown Forces";
+        }
+        return killer.getDisplayName().getString();
     }
 }

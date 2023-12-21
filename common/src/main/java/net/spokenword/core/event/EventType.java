@@ -4,6 +4,9 @@ public enum EventType {
     ENTITY_DEATH,
     OWNED_DEATH,
     PLAYER_JOIN,
+    PLAYER_LEAVE,
+    SELF_KICKED,
+    SELF_LEAVE,
     SELF_JOIN,
     BLOCK_BREAK,
     BLOCK_PLACE,
@@ -14,4 +17,8 @@ public enum EventType {
     SELF_RESPAWN,
     PLAYER_CHAT,
     PLAYER_MESSAGE,
+    SELF_LEVEL_UP,
+    ITEM_PICKUP,
+    ITEM_DROP,
+    PLAYER_DEATH,
 }

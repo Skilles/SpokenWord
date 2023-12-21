@@ -1,9 +1,9 @@
 package net.spokenword.core.event;
 
 import net.spokenword.SpokenWord;
-import net.spokenword.core.event.context.EventContext;
+import net.spokenword.core.event.transformer.EventTransformer;
 
-public abstract class AbstractEventListener<T> implements EventManager.EventListener<T> {
+public abstract class AbstractEventListener implements EventListener {
 
     private final EventType[] types;
 
@@ -17,7 +17,8 @@ public abstract class AbstractEventListener<T> implements EventManager.EventList
         }
     }
 
-    public abstract void onEvent(EventType type, EventContext<T> event);
+    @Override
+    public abstract void onEvent(EventTransformer transformer);
 
     public void unsubscribe() {
         for (EventType type : types) {

@@ -10,7 +10,7 @@ import net.spokenword.config.autoconfig.CustomListGroupImpl;
 import net.spokenword.config.mobhead.MobHeadReloadListener;
 import net.spokenword.core.behavior.BehaviorManager;
 import net.spokenword.core.event.EventManager;
-import net.spokenword.core.event.context.handler.ContextHandlers;
+import net.spokenword.core.event.transformer.EventTransformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,12 +45,11 @@ public class SpokenWord {
     }
 
     public static void init() {
-
         Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.getProvider());
 
         MobHeadReloadListener.register();
         CustomListGroupImpl.register();
-        ContextHandlers.register();
+        EventTransformers.register();
         BEHAVIOR_MANAGER.refreshBehaviors();
     }
 }

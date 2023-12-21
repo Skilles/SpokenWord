@@ -14,22 +14,26 @@ import java.util.List;
 
 public class BehaviorManager {
 
-    private static BehaviorManager INSTANCE;
-
     private List<Behavior<?>> behaviors;
+
+    private final ChatSender chatSender;
 
     private boolean initialized = false;
 
     public BehaviorManager() {
-        INSTANCE = this;
         this.behaviors = new ArrayList<>();
+        this.chatSender = new ChatSender();
     }
 
     private void subscribeBehaviors() {
         behaviors.forEach(Behavior::subscribe);
     }
 
-    public void reset() {
+    public ChatSender getChatSender() {
+        return chatSender;
+    }
+
+    private void reset() {
         updateBehaviors();
         if (!initialized) {
             // Freeze the list
@@ -41,7 +45,7 @@ public class BehaviorManager {
 
     public void refreshBehaviors() {
         SpokenWord.getLogger().info("Refreshing behaviors...");
-        INSTANCE.reset();
+        reset();
     }
 
     private void updateBehaviors() {

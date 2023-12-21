@@ -11,6 +11,7 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.spokenword.SpokenWord;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class MobHeadReloadListener implements PreparableReloadListener {
     }
 
     @Override
+    @NotNull
     public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
         return CompletableFuture.runAsync(() ->
         {
@@ -59,7 +61,7 @@ public class MobHeadReloadListener implements PreparableReloadListener {
                         var resourceLocation = new ResourceLocation(key);
 
                         if (!BuiltInRegistries.ENTITY_TYPE.containsKey(resourceLocation)) {
-                            SpokenWord.getLogger().warn("Found invalid entry " + entry.getKey());
+                            SpokenWord.getLogger().trace("Found invalid entry " + entry.getKey());
                             continue;
                         }
 

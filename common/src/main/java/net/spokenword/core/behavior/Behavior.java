@@ -1,13 +1,16 @@
 package net.spokenword.core.behavior;
 
+import net.minecraft.client.Minecraft;
+import net.spokenword.SpokenWord;
 import net.spokenword.core.event.AbstractEventListener;
 import net.spokenword.core.event.EventType;
-import net.spokenword.core.event.context.EventContext;
+import net.spokenword.core.event.transformer.EventTransformer;
+import net.spokenword.core.format.MessageVariable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Behavior<T> extends AbstractEventListener<T> {
+public class Behavior<T> extends AbstractEventListener {
 
     private List<String> messages;
 
@@ -24,13 +27,15 @@ public class Behavior<T> extends AbstractEventListener<T> {
     }
 
     @Override
-    public void onEvent(EventType type, EventContext<T> event) {
-        if (filter != null && !filter.isEmpty() && !filter.contains(event.getFilterable())) {
+    public void onEvent(EventTransformer transformer) {
+        if (filter != null && transformer.testFilter(filter)) {
             return;
         }
 
+        var localPlayer = Minecraft.getInstance().player;
         for (String message : messages) {
-            BehaviorUtil.sendChatMessage(event.parseMessage(type, message), null);
+            message = transformer.formatMessage(MessageVariable.SELF.replace(message, localPlayer.getDisplayName().getString()));
+            SpokenWord.getBehaviorManager().getChatSender().sendChatMessage(message);
         }
     }
 

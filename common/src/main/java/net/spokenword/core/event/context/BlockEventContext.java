@@ -10,11 +10,9 @@ public class BlockEventContext extends AbstractEventContext<Block> {
 
     private final Block block;
 
-    private final BlockPos pos;
-
     public BlockEventContext(Block block, BlockPos pos) {
+        super(Map.of("pos", pos.toShortString()));
         this.block = block;
-        this.pos = pos;
     }
 
     @Override
@@ -27,10 +25,5 @@ public class BlockEventContext extends AbstractEventContext<Block> {
     @NotNull
     public String getSourceName() {
         return block.getName().getString();
-    }
-
-    @Override
-    protected Map<String, String> getMetadata() {
-        return Map.of("pos", pos.toShortString());
     }
 }

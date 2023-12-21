@@ -34,7 +34,15 @@ public class SpokenWordConfig {
     @SerialEntry
     @Boolean(formatter = Boolean.Formatter.ON_OFF)
     @CustomName(SpokenWord.MOD_ID + ".config.globalEnabled")
+    @CustomDescription(SpokenWord.MOD_ID + ".config.globalEnabled.desc")
     public boolean globalEnabled = true;
+
+    @AutoGen(category = MAIN_CATEGORY)
+    @SerialEntry
+    @Boolean(formatter = Boolean.Formatter.ON_OFF)
+    @CustomName(SpokenWord.MOD_ID + ".config.antiSpamEnabled")
+    @CustomDescription(SpokenWord.MOD_ID + ".config.antiSpamEnabled.desc")
+    public boolean antiSpamEnabled = true;
 
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
@@ -46,6 +54,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onPlayerJoinMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onPlayerJoinEnabled")
+    @EventListenerOption(EventType.PLAYER_JOIN)
     public boolean onPlayerJoinEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -58,6 +67,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onPlayerLeaveMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onPlayerLeaveEnabled")
+    @EventListenerOption(EventType.PLAYER_LEAVE)
     public boolean onPlayerLeaveEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -70,6 +80,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onSelfJoinMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinEnabled")
+    @EventListenerOption(EventType.SELF_JOIN)
     public boolean onSelfJoinEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -82,19 +93,21 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onSelfLeaveMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveEnabled")
+    @EventListenerOption(EventType.SELF_LEAVE)
     public boolean onSelfLeaveEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathMessage")
-    public List<String> onSelfDeathMessage = List.of("I have died %player%!");
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedMessage")
+    public List<String> onSelfKickedMessage = List.of("I don't think %reason% is good enough...");
 
     @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
     @SerialEntry
-    @MasterTickBox(value = "onSelfDeathMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathEnabled")
-    public boolean onSelfDeathEnabled = false;
+    @MasterTickBox(value = "onSelfKickedMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedEnabled")
+    @EventListenerOption(EventType.SELF_KICKED)
+    public boolean onSelfKickedEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
@@ -144,6 +157,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onOwnedDeathMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onOwnedDeathEnabled")
+    @EventListenerOption(EventType.OWNED_DEATH)
     public boolean onOwnedDeathEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -162,6 +176,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onEntityDeathMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onEntityDeathEnabled")
+    @EventListenerOption(EventType.ENTITY_DEATH)
     public boolean onEntityDeathEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -180,6 +195,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onKillPveMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onKillPveEnabled")
+    @EventListenerOption(EventType.KILLED_PVE)
     public boolean onKillPveEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -198,6 +214,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onKillPvpMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpEnabled")
+    @EventListenerOption(EventType.KILLED_PVP)
     public boolean onKillPvpEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -216,6 +233,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onSelfDeathPveMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveEnabled")
+    @EventListenerOption(EventType.SELF_DEATH_PVE)
     public boolean onSelfDeathPveEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -224,10 +242,17 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpMessage")
     public List<String> onSelfDeathPvpMessage = List.of("%player% has killed me");
 
+    @AutoGen(category = FILTERS_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpFilter")
+    public List<String> onSelfDeathPvpFilter = List.of();
+
     @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
     @SerialEntry
     @MasterTickBox(value = "onSelfDeathPvpMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpEnabled")
+    @EventListenerOption(EventType.SELF_DEATH_PVP)
     public boolean onSelfDeathPvpEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -246,6 +271,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onChatMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onChatEnabled")
+    @EventListenerOption(EventType.PLAYER_CHAT)
     public boolean onChatEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -262,8 +288,9 @@ public class SpokenWordConfig {
 
     @AutoGen(category = TOGGLES_CATEGORY, group = CHAT_GROUP)
     @SerialEntry
-    @MasterTickBox(value = "onMessageEnabled")
+    @MasterTickBox(value = "onMessageFilter")
     @CustomName(SpokenWord.MOD_ID + ".config.onMessageEnabled")
+    @EventListenerOption(EventType.PLAYER_MESSAGE)
     public boolean onMessageEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
@@ -276,32 +303,6 @@ public class SpokenWordConfig {
     @SerialEntry
     @MasterTickBox(value = "onRespawnMessage")
     @CustomName(SpokenWord.MOD_ID + ".config.onRespawnEnabled")
+    @EventListenerOption(EventType.SELF_RESPAWN)
     public boolean onRespawnEnabled = false;
-
-
-
-
-    /*public class TestConfigCategory {
-
-        @AutoConfigOption(name = "Test option 1", description = "This is a test description 1")
-        @SerialEntry
-        public String testStringOption = "test";
-
-        @AutoConfigOption(name = "Test Boolean", description = "This is a test boolean description")
-        @SerialEntry
-        public List<Boolean> testBoolean = Collections.singletonList(false);
-
-        @AutoConfigGroup(name = "Test Group", description = "This is a test group description")
-        @SerialEntry
-        public TestConfigGroup testGroup = new TestConfigGroup();
-
-
-        public class TestConfigGroup {
-
-            @AutoConfigOption(name = "Test option 2", description = "This is a test description 2")
-            @SerialEntry
-            public Boolean testStringOption = true;
-
-        }
-    }*/
 }

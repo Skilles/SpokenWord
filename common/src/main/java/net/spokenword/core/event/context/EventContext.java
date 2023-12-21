@@ -1,7 +1,6 @@
 package net.spokenword.core.event.context;
 
-import net.spokenword.SpokenWord;
-import net.spokenword.core.event.EventType;
+import java.util.Map;
 
 public interface EventContext<T> {
 
@@ -13,11 +12,11 @@ public interface EventContext<T> {
 
     String getMeta(String key);
 
-    default String parseMessage(EventType type, String message) {
-        return SpokenWord.getEventManager().getParsedMessage(type, this, message);
-    }
-
     static EventContext<Void> simple() {
         return new SimpleEventContext();
+    }
+
+    static EventContext<Void> simple(String key, String value) {
+        return new SimpleEventContext(Map.of(key, value));
     }
 }

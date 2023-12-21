@@ -1,4 +1,4 @@
-package net.spokenword.config.autoconfig;
+package net.spokenword.config.autoconfig.api;
 
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 public class AutoConfig {
 
     public static void initialize(SpokenWordConfig defaults, SpokenWordConfig config, YetAnotherConfigLib.Builder configBuilder) {
@@ -199,4 +200,28 @@ public class AutoConfig {
             throw new RuntimeException("Unsupported type: " + type);
         }
     }
+
+    /*public class TestConfigCategory {
+
+        @AutoConfigOption(name = "Test option 1", description = "This is a test description 1")
+        @SerialEntry
+        public String testStringOption = "test";
+
+        @AutoConfigOption(name = "Test Boolean", description = "This is a test boolean description")
+        @SerialEntry
+        public List<Boolean> testBoolean = Collections.singletonList(false);
+
+        @AutoConfigGroup(name = "Test Group", description = "This is a test group description")
+        @SerialEntry
+        public TestConfigGroup testGroup = new TestConfigGroup();
+
+
+        public class TestConfigGroup {
+
+            @AutoConfigOption(name = "Test option 2", description = "This is a test description 2")
+            @SerialEntry
+            public Boolean testStringOption = true;
+
+        }
+    }*/
 }

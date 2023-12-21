@@ -1,9 +1,9 @@
 package net.spokenword.core.event;
 
-import net.minecraft.client.Minecraft;
 import net.spokenword.SpokenWord;
 import net.spokenword.core.event.context.EventContext;
-import net.spokenword.core.event.context.handler.EventContextHandler;
+import net.spokenword.core.event.transformer.EventTransformer;
+import net.spokenword.core.event.transformer.EventTransformerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,47 +13,40 @@ import java.util.Map;
 public class EventManager {
 
     private static final Map<EventType, List<EventListener>> listeners = new HashMap<>();
+    private static final Map<EventType, EventTransformerFactory<?>> eventTransformerFactories = new HashMap<>();
 
-    private static final Map<EventType, EventContextHandler> contextHandlers = new HashMap<>();
+    private static final EventTransformerFactory<EventContext<Object>> defaultTransformerFactory = EventTransformer.createBuilder().build();
 
-    public void subscribe(EventType type, EventListener<?> listener) {
+    public void subscribe(EventType type, EventListener listener) {
         listeners.computeIfAbsent(type, k -> new ArrayList<>()).add(listener);
     }
 
-    public void unsubscribe(EventType type, EventListener<?> listener) {
+    public void unsubscribe(EventType type, EventListener listener) {
         listeners.get(type).remove(listener);
     }
 
-    public void dispatchEvent(EventType type, EventContext<?> context) {
+    public <T extends EventContext<?>> void dispatchEvent(EventType type, T context) {
         if (!SpokenWord.getConfig().globalEnabled) {
             return;
         }
-        listeners.computeIfAbsent(type, k -> new ArrayList<>()).forEach(listener -> listener.onEvent(type, context));
+        if (!listeners.containsKey(type)) {
+            return;
+        }
+        var transformer = getEventTransformerFactory(type).create(context);
+        listeners.get(type).forEach(listener -> listener.onEvent(transformer));
     }
 
-    public <T extends EventContext<?>> EventContextHandler<T> registerContextHandler(EventContextHandler.BuilderCallback<T> configureBuilder, EventType... type) {
-        var handler = configureBuilder.configure(EventContextHandler.createBuilder()).build();
+    public <T extends EventContext<TFilter>, TFilter> EventTransformerFactory<T> registerEventTransformer(EventTransformer.BuilderCallback<T, TFilter> configureBuilder, EventType... type) {
+        var transformer = configureBuilder.configure(EventTransformer.createBuilder()).build();
 
         for (EventType eventType : type) {
-            contextHandlers.put(eventType, handler);
+            eventTransformerFactories.put(eventType, transformer);
         }
 
-        return handler;
+        return transformer;
     }
 
-    // TODO: find a better place for this
-    public String getParsedMessage(EventType type, EventContext<?> context, String message) {
-        if (contextHandlers.containsKey(type)) {
-            var handler = contextHandlers.get(type);
-            message = handler.formatMessage(context, message);
-        }
-        message = message.replace("%self%", Minecraft.getInstance().player.getDisplayName().getString());
-
-        return message;
-    }
-
-    public interface EventListener<T> {
-
-        void onEvent(EventType type, EventContext<T> event);
+    private <T extends EventContext<?>> EventTransformerFactory<T> getEventTransformerFactory(EventType type) {
+        return (EventTransformerFactory<T>) eventTransformerFactories.getOrDefault(type, defaultTransformerFactory);
     }
 }
