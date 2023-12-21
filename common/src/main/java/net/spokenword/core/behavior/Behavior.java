@@ -9,10 +9,10 @@ import java.util.List;
 
 public class Behavior<T> extends AbstractEventListener<T> {
 
-    private final List<String> messages;
+    private List<String> messages;
 
     @Nullable
-    private final List<T> filter;
+    private List<T> filter;
 
     private final String name;
 
@@ -32,6 +32,11 @@ public class Behavior<T> extends AbstractEventListener<T> {
         for (String message : messages) {
             BehaviorUtil.sendChatMessage(event.parseMessage(type, message), null);
         }
+    }
+
+    public void update(List<String> messages, @Nullable List<T> filter) {
+        this.messages = messages;
+        this.filter = filter;
     }
 
     @Override

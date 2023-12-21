@@ -1,6 +1,7 @@
 package net.spokenword.core.event;
 
 import net.minecraft.client.Minecraft;
+import net.spokenword.SpokenWord;
 import net.spokenword.core.event.context.EventContext;
 import net.spokenword.core.event.context.handler.EventContextHandler;
 
@@ -24,6 +25,9 @@ public class EventManager {
     }
 
     public void dispatchEvent(EventType type, EventContext<?> context) {
+        if (!SpokenWord.getConfig().globalEnabled) {
+            return;
+        }
         listeners.computeIfAbsent(type, k -> new ArrayList<>()).forEach(listener -> listener.onEvent(type, context));
     }
 

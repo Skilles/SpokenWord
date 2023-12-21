@@ -46,7 +46,7 @@ public class SpokenWord {
 
     public static void init() {
 
-        Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.create());
+        Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.getProvider());
 
         MobHeadReloadListener.register();
         CustomListGroupImpl.register();
