@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundLoginPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
@@ -46,16 +45,5 @@ public class ClientPacketListenerMixin {
     @Inject(method = "handleSystemChat", at = @At(value = "TAIL"))
     void onChatMessage(ClientboundSystemChatPacket packet, CallbackInfo ci) {
         SpokenWord.getLogger().info("System chat message: " + packet.content().getString());
-    }
-
-    @Inject(method = "onDisconnect", at = @At(value = "HEAD"))
-    void onDisconnect(Component reason, CallbackInfo ci) {
-        SpokenWord.getEventManager().dispatchEvent(EventType.SELF_KICKED, EventContext.simple("reason", reason.getString()));
-        // wait a bit to allow the message to be sent
-        try {
-            Thread.sleep(5);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
