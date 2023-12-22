@@ -28,7 +28,12 @@ public class SpokenWord {
 
     private static final EventManager EVENT_MANAGER = new EventManager();
 
+    public static final boolean YACL_LOADED = Platform.isModLoaded("yet_another_config_lib_v3");
+
     public static SpokenWordConfig getConfig() {
+        if (!YACL_LOADED) {
+            return new SpokenWordConfig();
+        }
         return SpokenWordConfigScreen.getHandler().instance();
     }
 
@@ -47,9 +52,11 @@ public class SpokenWord {
     public static void init() {
         Platform.getMod(MOD_ID).registerConfigurationScreen(ConfigScreenFactory.getProvider());
 
-        MobHeadReloadListener.register();
-        CustomListGroupImpl.register();
-        EventTransformers.register();
-        BEHAVIOR_MANAGER.refreshBehaviors();
+        if (YACL_LOADED) {
+            MobHeadReloadListener.register();
+            CustomListGroupImpl.register();
+            EventTransformers.register();
+            BEHAVIOR_MANAGER.refreshBehaviors();
+        }
     }
 }

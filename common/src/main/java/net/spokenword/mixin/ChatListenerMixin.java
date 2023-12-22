@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChatListener.class)
 public class ChatListenerMixin {
 
+    // Used in vanilla SMP servers
     @Inject(method = "handlePlayerChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/network/chat/ChatType$Bound;)V", at = @At(value = "TAIL"))
     void handlePlayerChatMessage(PlayerChatMessage chatMessage, GameProfile gameProfile, ChatType.Bound boundChatType, CallbackInfo ci) {
         SpokenWord.getLogger().info("Player chat message: " + chatMessage.signedContent());

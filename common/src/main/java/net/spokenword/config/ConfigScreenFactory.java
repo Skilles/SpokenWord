@@ -1,11 +1,11 @@
 package net.spokenword.config;
 
 import dev.architectury.platform.Mod;
-import dev.architectury.platform.Platform;
+import net.spokenword.SpokenWord;
 
 public class ConfigScreenFactory {
     public static Mod.ConfigurationScreenProvider getProvider() {
-        if (Platform.isModLoaded("yet_another_config_lib_v3")) {
+        if (SpokenWord.YACL_LOADED) {
             SpokenWordConfigScreen.getHandler().load();
             return SpokenWordConfigScreen::create;
         }
