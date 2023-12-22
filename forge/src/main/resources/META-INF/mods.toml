@@ -9,9 +9,9 @@ version = "${version}"
 displayName = "Spoken Word"
 authors = "Skilles"
 description = '''
-Send chat messages or commands on certain game events
+Send chat messages or commands on certain game events.
 '''
-#logoFile = ""
+logoFile = "icon.png"
 
 [[dependencies.spokenword]]
 modId = "forge"

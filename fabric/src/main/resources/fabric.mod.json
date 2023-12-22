@@ -3,7 +3,7 @@
   "id": "spokenword",
   "version": "${version}",
   "name": "Spoken Word",
-  "description": "Send chat messages or commands on certain game events",
+  "description": "Send chat messages or commands on certain game events.",
   "authors": [
     "Skilles"
   ],
