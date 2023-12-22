@@ -27,21 +27,6 @@ public class SpokenWordConfigScreen {
                                                                                .build())
                                    .build();
 
-    /*public static YetAnotherConfigLib create() {
-        var builder = YetAnotherConfigLib.createBuilder()
-                .title(Component.literal("SpokenWord"));
-
-        builder.save(HANDLER::save);
-
-        return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> {
-            builder.title(Component.literal("SpokenWord"));
-
-            AutoConfig.initialize(defaults, config, builder);
-
-            return builder;
-        });
-    }*/
-
     public static Screen create(Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);
     }
