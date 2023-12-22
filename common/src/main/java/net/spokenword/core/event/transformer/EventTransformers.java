@@ -46,13 +46,6 @@ public class EventTransformers {
                                                                                                        .withFormatter((context, message) -> MessageVariable
                                                                                                                .PLAYER.replace(message, context.getSourceName())),
                                                                                                EventType.PLAYER_JOIN, EventType.PLAYER_LEAVE);
-
-    public static final EventTransformerFactory<SimpleEventContext> PLAYER_KICKED = SpokenWord.getEventManager()
-                                                                                              .registerEventTransformer(builder -> builder
-                                                                                                              .withFormatter((context, message) -> MessageVariable
-                                                                                                                      .REASON.replace(message, context.getMeta("reason"))),
-                                                                                                      EventType.SELF_KICKED);
-
     public static final EventTransformerFactory<ChatEventContext> CHAT = SpokenWord.getEventManager()
                                                                                    .registerEventTransformer(builder -> builder
                                                                                                    .withFormatter((context, message) -> MessageVariable

@@ -22,8 +22,6 @@
   "spokenword.config.onSelfJoinEnabled": "Self Join",
   "spokenword.config.onSelfLeaveMessage": "Self Leave",
   "spokenword.config.onSelfLeaveEnabled": "Self Leave",
-  "spokenword.config.onSelfKickedMessage": "Self Kicked",
-  "spokenword.config.onSelfKickedEnabled": "Self Kicked",
   "spokenword.config.onSelfDeathMessage": "Self Death",
   "spokenword.config.onSelfDeathEnabled": "Self Death",
   "spokenword.config.onBlockBreakMessage": "Block Break",

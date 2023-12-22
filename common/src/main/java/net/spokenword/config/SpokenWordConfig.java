@@ -80,19 +80,6 @@ public class SpokenWordConfig {
     @EventListenerOption(EventType.SELF_LEAVE)
     public boolean onSelfLeaveEnabled = false;
 
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedMessage")
-    public List<String> onSelfKickedMessage = List.of("I don't think %reason% is good enough...");
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfKickedMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedEnabled")
-    @EventListenerOption(EventType.SELF_KICKED)
-    public boolean onSelfKickedEnabled = false;
-
     @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
     @SerialEntry
     @MasterTickBox(value = "onKillPveMessage")
