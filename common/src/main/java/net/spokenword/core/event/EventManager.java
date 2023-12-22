@@ -1,5 +1,6 @@
 package net.spokenword.core.event;
 
+import net.minecraft.client.Minecraft;
 import net.spokenword.SpokenWord;
 import net.spokenword.core.event.context.EventContext;
 import net.spokenword.core.event.transformer.EventTransformer;
@@ -26,10 +27,13 @@ public class EventManager {
     }
 
     public <T extends EventContext<?>> void dispatchEvent(EventType type, T context) {
-        if (!SpokenWord.getConfig().globalEnabled) {
+        SpokenWord.getLogger().info("Dispatching event " + type.name());
+        if (!SpokenWord.getConfig().globalEnabled || !checkIpFilter()) {
+            SpokenWord.getLogger().info("Event " + type.name() + " was cancelled by globalEnabled or ipFilter");
             return;
         }
         if (!listeners.containsKey(type)) {
+            SpokenWord.getLogger().info("Event " + type.name() + " was cancelled by no listeners");
             return;
         }
         var transformer = getEventTransformerFactory(type).create(context);
@@ -48,5 +52,15 @@ public class EventManager {
 
     private <T extends EventContext<?>> EventTransformerFactory<T> getEventTransformerFactory(EventType type) {
         return (EventTransformerFactory<T>) eventTransformerFactories.getOrDefault(type, defaultTransformerFactory);
+    }
+
+    private static boolean checkIpFilter() {
+        var currentServer = Minecraft.getInstance().getCurrentServer();
+        if (currentServer == null) {
+            return true;
+        }
+        var ipFilter = SpokenWord.getConfig().ipFilter;
+
+        return ipFilter.isEmpty() || ipFilter.contains(currentServer.ip);
     }
 }

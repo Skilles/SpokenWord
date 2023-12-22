@@ -2,6 +2,7 @@ package net.spokenword.core.event.transformer;
 
 import net.spokenword.core.event.context.EventContext;
 import net.spokenword.core.format.BehaviorFilterFormatter;
+import net.spokenword.core.format.BehaviorFilterOverride;
 import net.spokenword.core.format.BehaviorMessageFormatter;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public interface EventTransformer {
 
         private BehaviorFilterFormatter<?, TFilter> filterFormatter;
 
+        private BehaviorFilterOverride<TFilter> filterOverride;
+
         public Builder<T, TFilter> withFormatter(BehaviorMessageFormatter<T> callback) {
             if (this.formatter == null) {
                 this.formatter = callback;
@@ -57,11 +60,16 @@ public interface EventTransformer {
             return this;
         }
 
+        public Builder<T, TFilter> withFilterOverride(BehaviorFilterOverride<TFilter> callback) {
+            this.filterOverride = callback;
+            return this;
+        }
+
         public EventTransformerFactory<T> build() {
             if (this.formatter == null) {
                 this.formatter = (context, message) -> message;
             }
-            return EventTransformerFactory.createTransformer(formatter, filterFormatter);
+            return EventTransformerFactory.createTransformer(formatter, filterFormatter, filterOverride);
         }
     }
 }

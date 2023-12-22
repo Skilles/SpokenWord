@@ -23,10 +23,13 @@ public class SpokenWordConfig {
     private final String TOGGLES_CATEGORY = "toggles";
     private final String FILTERS_CATEGORY = "filters";
     private final String MESSAGES_CATEGORY = "messages";
+    private final String ADVANCED_CATEGORY = "advanced";
+    private final String SELF_GROUP = "self";
     private final String ENTITY_GROUP = "entity";
     private final String BLOCK_GROUP = "block";
     private final String ITEM_GROUP = "item";
     private final String CHAT_GROUP = "chat";
+    private final String TRIGGER_GROUP = "trigger";
     private final String PLAYER_GROUP = "player";
     private final String MISC_CATEGORY = "misc";
 
@@ -43,6 +46,129 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.antiSpamEnabled")
     @CustomDescription(SpokenWord.MOD_ID + ".config.antiSpamEnabled.desc")
     public boolean antiSpamEnabled = true;
+
+    @AutoGen(category = MAIN_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.ipFilter")
+    @CustomDescription(SpokenWord.MOD_ID + ".config.ipFilter.desc")
+    public List<String> ipFilter = List.of();
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinMessage")
+    public List<String> onSelfJoinMessage = List.of("Hello it is me %player%!");
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onSelfJoinMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinEnabled")
+    @EventListenerOption(EventType.SELF_JOIN)
+    public boolean onSelfJoinEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveMessage")
+    public List<String> onSelfLeaveMessage = List.of("Goodbye, %player%!");
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onSelfLeaveMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveEnabled")
+    @EventListenerOption(EventType.SELF_LEAVE)
+    public boolean onSelfLeaveEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedMessage")
+    public List<String> onSelfKickedMessage = List.of("I don't think %reason% is good enough...");
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onSelfKickedMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedEnabled")
+    @EventListenerOption(EventType.SELF_KICKED)
+    public boolean onSelfKickedEnabled = false;
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onKillPveMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onKillPveEnabled")
+    @EventListenerOption(EventType.KILLED_PVE)
+    public boolean onKillPveEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpMessage")
+    public List<String> onKillPvpMessage = List.of("I have slain %player%");
+
+    @AutoGen(category = FILTERS_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpFilter")
+    public List<String> onKillPvpFilter = List.of();
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onKillPvpMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpEnabled")
+    @EventListenerOption(EventType.KILLED_PVP)
+    public boolean onKillPvpEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveMessage")
+    public List<String> onSelfDeathPveMessage = List.of("%entity% has killed me");
+
+    @AutoGen(category = FILTERS_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = EntityListGroup.class, valueFactory = EntityListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveFilter")
+    public List<EntityType<?>> onSelfDeathPveFilter = List.of();
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onSelfDeathPveMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveEnabled")
+    @EventListenerOption(EventType.SELF_DEATH_PVE)
+    public boolean onSelfDeathPveEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpMessage")
+    public List<String> onSelfDeathPvpMessage = List.of("%player% has killed me");
+
+    @AutoGen(category = FILTERS_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpFilter")
+    public List<String> onSelfDeathPvpFilter = List.of();
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onSelfDeathPvpMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpEnabled")
+    @EventListenerOption(EventType.SELF_DEATH_PVP)
+    public boolean onSelfDeathPvpEnabled = false;
+
+    @AutoGen(category = MESSAGES_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onRespawnMessage")
+    public List<String> onRespawnMessage = List.of("I am reborn!");
+
+    @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
+    @SerialEntry
+    @MasterTickBox(value = "onRespawnMessage")
+    @CustomName(SpokenWord.MOD_ID + ".config.onRespawnEnabled")
+    @EventListenerOption(EventType.SELF_RESPAWN)
+    public boolean onRespawnEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
@@ -69,45 +195,6 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onPlayerLeaveEnabled")
     @EventListenerOption(EventType.PLAYER_LEAVE)
     public boolean onPlayerLeaveEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinMessage")
-    public List<String> onSelfJoinMessage = List.of("Hello it is me %player%!");
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfJoinMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinEnabled")
-    @EventListenerOption(EventType.SELF_JOIN)
-    public boolean onSelfJoinEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveMessage")
-    public List<String> onSelfLeaveMessage = List.of("Goodbye, %player%!");
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfLeaveMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveEnabled")
-    @EventListenerOption(EventType.SELF_LEAVE)
-    public boolean onSelfLeaveEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedMessage")
-    public List<String> onSelfKickedMessage = List.of("I don't think %reason% is good enough...");
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfKickedMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfKickedEnabled")
-    @EventListenerOption(EventType.SELF_KICKED)
-    public boolean onSelfKickedEnabled = false;
 
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
@@ -191,70 +278,6 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onKillPveFilter")
     public List<EntityType<?>> onKillPveFilter = List.of();
 
-    @AutoGen(category = TOGGLES_CATEGORY, group = ENTITY_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onKillPveMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onKillPveEnabled")
-    @EventListenerOption(EventType.KILLED_PVE)
-    public boolean onKillPveEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpMessage")
-    public List<String> onKillPvpMessage = List.of("I have slain %player%");
-
-    @AutoGen(category = FILTERS_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpFilter")
-    public List<String> onKillPvpFilter = List.of();
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onKillPvpMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onKillPvpEnabled")
-    @EventListenerOption(EventType.KILLED_PVP)
-    public boolean onKillPvpEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveMessage")
-    public List<String> onSelfDeathPveMessage = List.of("%entity% has killed me");
-
-    @AutoGen(category = FILTERS_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = EntityListGroup.class, valueFactory = EntityListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveFilter")
-    public List<EntityType<?>> onSelfDeathPveFilter = List.of();
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfDeathPveMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPveEnabled")
-    @EventListenerOption(EventType.SELF_DEATH_PVE)
-    public boolean onSelfDeathPveEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpMessage")
-    public List<String> onSelfDeathPvpMessage = List.of("%player% has killed me");
-
-    @AutoGen(category = FILTERS_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpFilter")
-    public List<String> onSelfDeathPvpFilter = List.of();
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onSelfDeathPvpMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onSelfDeathPvpEnabled")
-    @EventListenerOption(EventType.SELF_DEATH_PVP)
-    public boolean onSelfDeathPvpEnabled = false;
-
     @AutoGen(category = MESSAGES_CATEGORY)
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
@@ -266,6 +289,12 @@ public class SpokenWordConfig {
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onChatFilter")
     public List<String> onChatFilter = List.of();
+
+    @AutoGen(category = ADVANCED_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onChatTrigger")
+    public List<String> onChatTrigger = List.of();
 
     @AutoGen(category = TOGGLES_CATEGORY, group = CHAT_GROUP)
     @SerialEntry
@@ -286,23 +315,16 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onMessageFilter")
     public List<String> onMessageFilter = List.of();
 
+    @AutoGen(category = ADVANCED_CATEGORY)
+    @SerialEntry
+    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
+    @CustomName(SpokenWord.MOD_ID + ".config.onMessageTrigger")
+    public List<String> onMessageTrigger = List.of();
+
     @AutoGen(category = TOGGLES_CATEGORY, group = CHAT_GROUP)
     @SerialEntry
     @MasterTickBox(value = "onMessageFilter")
     @CustomName(SpokenWord.MOD_ID + ".config.onMessageEnabled")
     @EventListenerOption(EventType.PLAYER_MESSAGE)
     public boolean onMessageEnabled = false;
-
-    @AutoGen(category = MESSAGES_CATEGORY)
-    @SerialEntry
-    @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
-    @CustomName(SpokenWord.MOD_ID + ".config.onRespawnMessage")
-    public List<String> onRespawnMessage = List.of("I am reborn!");
-
-    @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
-    @SerialEntry
-    @MasterTickBox(value = "onRespawnMessage")
-    @CustomName(SpokenWord.MOD_ID + ".config.onRespawnEnabled")
-    @EventListenerOption(EventType.SELF_RESPAWN)
-    public boolean onRespawnEnabled = false;
 }

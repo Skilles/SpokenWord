@@ -10,7 +10,8 @@
     "LivingEntityMixin",
     "LocalPlayerMixin",
     "MultiPlayerGameModeMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "PlayerSocialManagerMixin"
   ],
   "mixins": [
   ],

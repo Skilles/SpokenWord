@@ -28,7 +28,7 @@ public class Behavior<T> extends AbstractEventListener {
 
     @Override
     public void onEvent(EventTransformer transformer) {
-        if (filter != null && transformer.testFilter(filter)) {
+        if (filter != null && !transformer.testFilter(filter)) {
             return;
         }
 

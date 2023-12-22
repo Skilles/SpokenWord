@@ -23,10 +23,4 @@ public class ChatEventContext extends AbstractEventContext<String> {
     public String getSourceName() {
         return sender;
     }
-
-    @Override
-    @NotNull
-    public String getTargetName() {
-        return message;
-    }
 }

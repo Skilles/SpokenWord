@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Player.class)
-public abstract class PlayerMixin {
+public class PlayerMixin {
 
     @Shadow
     public int experienceLevel;

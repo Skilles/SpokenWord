@@ -2,11 +2,9 @@ package net.spokenword.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLoginPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
@@ -16,7 +14,6 @@ import net.spokenword.SpokenWord;
 import net.spokenword.core.event.EventType;
 import net.spokenword.core.event.context.EventContext;
 import net.spokenword.core.event.context.KilledEventContext;
-import net.spokenword.core.event.context.PlayerEventContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -40,27 +37,9 @@ public class ClientPacketListenerMixin {
         }
     }
 
-    // TODO find better injection point
     @Inject(method = "handleLogin", at = @At(value = "TAIL"))
     void onLogin(ClientboundLoginPacket packet, CallbackInfo ci) {
-        var playerId = packet.playerId();
-        if (playerId == Minecraft.getInstance().player.getId()) {
-            SpokenWord.getEventManager().dispatchEvent(EventType.SELF_JOIN, EventContext.simple());
-        } else {
-            Minecraft.getInstance().level.players()
-                                         .stream()
-                                         .filter(p -> p.getId() == playerId)
-                                         .findFirst()
-                                         .ifPresent(p -> SpokenWord.getEventManager().dispatchEvent(EventType.PLAYER_JOIN, new PlayerEventContext(p)));
-        }
-
-    }
-
-    @Inject(method = "handleEntityEvent", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Entity;handleEntityEvent(B)V", shift = At.Shift.AFTER),
-            locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    void onEntityEvent(ClientboundEntityEventPacket packet, CallbackInfo ci, Entity entity) {
-
+        SpokenWord.getEventManager().dispatchEvent(EventType.SELF_JOIN, EventContext.simple());
     }
 
     @Inject(method = "handleSystemChat", at = @At(value = "TAIL"))

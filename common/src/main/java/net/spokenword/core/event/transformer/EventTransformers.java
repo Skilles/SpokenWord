@@ -44,8 +44,7 @@ public class EventTransformers {
     public static final EventTransformerFactory<PlayerEventContext> PLAYER = SpokenWord.getEventManager()
                                                                                        .registerEventTransformer(builder -> builder
                                                                                                        .withFormatter((context, message) -> MessageVariable
-                                                                                                               .PLAYER.replace(message, context.getSourceName()))
-                                                                                                       .withFilterFormatter((player) -> player.getDisplayName().getString()),
+                                                                                                               .PLAYER.replace(message, context.getSourceName())),
                                                                                                EventType.PLAYER_JOIN, EventType.PLAYER_LEAVE);
 
     public static final EventTransformerFactory<SimpleEventContext> PLAYER_KICKED = SpokenWord.getEventManager()
@@ -58,10 +57,11 @@ public class EventTransformers {
                                                                                    .registerEventTransformer(builder -> builder
                                                                                                    .withFormatter((context, message) -> MessageVariable
                                                                                                            .builder(message)
-                                                                                                           .replace(MessageVariable.PLAYER, context.getSourceName()) // switch these?
-                                                                                                           .replace(MessageVariable.MESSAGE, context.getTargetName())
+                                                                                                           .replace(MessageVariable.PLAYER, context.getSourceName())
+                                                                                                           .replace(MessageVariable.MESSAGE, context.getFilterable())
                                                                                                            .build())
-                                                                                                   .withFilterFormatter((message) -> MessageVariable.SELF.replace(message, Minecraft.getInstance().player.getDisplayName().getString())),
+                                                                                                   .withFilterFormatter((filterEntry) -> MessageVariable.SELF.replace(filterEntry, Minecraft.getInstance().player.getDisplayName().getString()))
+                                                                                                   .withFilterOverride((filter, message) -> filter.stream().anyMatch((entry) -> message.toLowerCase().contains(entry.toLowerCase()))),
                                                                                        EventType.PLAYER_CHAT, EventType.PLAYER_MESSAGE);
 
     public static void register() {

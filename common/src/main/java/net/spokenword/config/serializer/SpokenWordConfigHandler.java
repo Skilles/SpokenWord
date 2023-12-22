@@ -103,7 +103,7 @@ public class SpokenWordConfigHandler implements ConfigClassHandler<SpokenWordCon
                                 new LinkedHashMap<>()
                         )
                 );
-                OptionAddable group = groups.groups().computeIfAbsent(autoGen.group().orElse(""), k -> {
+                var group = groups.groups().computeIfAbsent(autoGen.group().orElse(""), k -> {
                     if (k.isEmpty()) {
                         return groups.category();
                     }
@@ -119,7 +119,11 @@ public class SpokenWordConfigHandler implements ConfigClassHandler<SpokenWordCon
                 }
 
                 storage.putOption(configField.access().name(), option);
-                group.option(option);
+                if (option instanceof ListOption<?> listOption) {
+                    groups.groups.put(listOption.name().getString(), listOption);
+                } else if (group instanceof OptionAddable optionAddable) {
+                    optionAddable.option(option);
+                }
             });
         }
         storage.checkBadOperations();
@@ -209,11 +213,13 @@ public class SpokenWordConfigHandler implements ConfigClassHandler<SpokenWordCon
         }
     }
 
-    private record CategoryAndGroups(ConfigCategory.Builder category, Map<String, OptionAddable> groups) {
+    private record CategoryAndGroups(ConfigCategory.Builder category, Map<String, Object> groups) {
         private void finaliseGroups() {
             groups.forEach((name, group) -> {
                 if (group instanceof OptionGroup.Builder groupBuilder) {
                     category.group(groupBuilder.build());
+                } else if (group instanceof ListOption<?> listOption) {
+                    category.group(listOption);
                 }
             });
         }

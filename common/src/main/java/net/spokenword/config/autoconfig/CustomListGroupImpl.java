@@ -4,10 +4,7 @@ import dev.isxander.yacl3.api.ListOption;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.config.v2.api.ConfigField;
-import dev.isxander.yacl3.config.v2.api.autogen.CustomName;
-import dev.isxander.yacl3.config.v2.api.autogen.ListGroup;
-import dev.isxander.yacl3.config.v2.api.autogen.OptionAccess;
-import dev.isxander.yacl3.config.v2.api.autogen.OptionFactory;
+import dev.isxander.yacl3.config.v2.api.autogen.*;
 import dev.isxander.yacl3.config.v2.impl.FieldBackedBinding;
 import dev.isxander.yacl3.config.v2.impl.autogen.OptionFactoryRegistry;
 import dev.isxander.yacl3.config.v2.impl.autogen.YACLAutoGenException;
@@ -23,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
-// Yacl forgot to add CustomName annotation support to list groups :(
 public class CustomListGroupImpl<T> implements OptionFactory<ListGroup, List<T>> {
     @Override
     public Option<List<T>> createOption(ListGroup annotation, ConfigField<List<T>> field, OptionAccess optionAccess) {
@@ -64,6 +60,12 @@ public class CustomListGroupImpl<T> implements OptionFactory<ListGroup, List<T>>
                 builder.text(Component.translatable(key + i));
             }
         }
+
+        field.access().getAnnotation(CustomDescription.class).ifPresent(customDescription -> {
+            for (String line : customDescription.value()) {
+                builder.text(Component.translatable(line));
+            }
+        });
 
         String imagePath = "textures/yacl3/" + field.parent().id().getPath() + "/" + field.access().name() + ".webp";
         imagePath = imagePath.toLowerCase().replaceAll("[^a-z0-9/._:-]", "_");
