@@ -11,7 +11,7 @@ architectury {
 forgix {
     group = rootProject.maven_group
     mergedJarName = rootProject.archives_base_name
-    outputDir = "build/libs/Merged"
+    outputDir = "build/libs/merged-${rootProject.minecraft_version}"
 }
 
 subprojects {
