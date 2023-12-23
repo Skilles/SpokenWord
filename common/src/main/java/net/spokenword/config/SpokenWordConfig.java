@@ -5,7 +5,6 @@ import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.spokenword.SpokenWord;
 import net.spokenword.config.autoconfig.BlockListGroup;
 import net.spokenword.config.autoconfig.EntityListGroup;
@@ -58,7 +57,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfJoinMessage")
-    public List<String> onSelfJoinMessage = List.of("Hello it is me %player%!");
+    public List<String> onSelfJoinMessage = List.of("Hello it is me %self%!");
 
     @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
     @SerialEntry
@@ -71,7 +70,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onSelfLeaveMessage")
-    public List<String> onSelfLeaveMessage = List.of("Goodbye, %player%!");
+    public List<String> onSelfLeaveMessage = List.of("Goodbye, everyone!");
 
     @AutoGen(category = TOGGLES_CATEGORY, group = SELF_GROUP)
     @SerialEntry
@@ -161,7 +160,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onPlayerJoinMessage")
-    public List<String> onPlayerJoinMessage = List.of("Welcome to the server, %player%!");
+    public List<String> onPlayerJoinMessage = List.of("Welcome %player%!");
 
     @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
     @SerialEntry
@@ -174,7 +173,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onPlayerLeaveMessage")
-    public List<String> onPlayerLeaveMessage = List.of("Goodbye, %player%!");
+    public List<String> onPlayerLeaveMessage = List.of("Bye %player%!");
 
     @AutoGen(category = TOGGLES_CATEGORY, group = PLAYER_GROUP)
     @SerialEntry
@@ -193,7 +192,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = BlockListGroup.class, valueFactory = BlockListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onBlockBreakFilter")
-    public List<Block> onBlockBreakFilter = List.of(Blocks.GRASS_BLOCK);
+    public List<Block> onBlockBreakFilter = List.of();
 
     @AutoGen(category = TOGGLES_CATEGORY, group = BLOCK_GROUP)
     @SerialEntry
@@ -212,7 +211,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = BlockListGroup.class, valueFactory = BlockListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onBlockPlaceFilter")
-    public List<Block> onBlockPlaceFilter = List.of(Blocks.GRASS_BLOCK);
+    public List<Block> onBlockPlaceFilter = List.of();
 
     @AutoGen(category = TOGGLES_CATEGORY, group = BLOCK_GROUP)
     @SerialEntry
@@ -275,7 +274,7 @@ public class SpokenWordConfig {
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onChatFilter")
-    public List<String> onChatFilter = List.of();
+    public List<String> onChatFilter = List.of("%self%");
 
     @AutoGen(category = ADVANCED_CATEGORY)
     @SerialEntry
@@ -302,11 +301,11 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onMessageFilter")
     public List<String> onMessageFilter = List.of();
 
-    @AutoGen(category = ADVANCED_CATEGORY)
+    /*@AutoGen(category = ADVANCED_CATEGORY)
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onMessageTrigger")
-    public List<String> onMessageTrigger = List.of();
+    public List<String> onMessageTrigger = List.of();*/
 
     @AutoGen(category = TOGGLES_CATEGORY, group = CHAT_GROUP)
     @SerialEntry

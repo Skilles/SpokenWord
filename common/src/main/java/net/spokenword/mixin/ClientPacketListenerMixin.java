@@ -44,6 +44,10 @@ public class ClientPacketListenerMixin {
     // Used in servers with custom chat formatting
     @Inject(method = "handleSystemChat", at = @At(value = "TAIL"))
     void onChatMessage(ClientboundSystemChatPacket packet, CallbackInfo ci) {
-        SpokenWord.getLogger().info("System chat message: " + packet.content().getString());
+        /*SpokenWord.getLogger().info("System chat message: " + packet.content().getString());
+        var config = SpokenWord.getConfig();
+        var message = packet.content().getString();
+        BehaviorUtil.handleSystemChatEvent(config.onChatTrigger, EventType.PLAYER_CHAT, message);
+        BehaviorUtil.handleSystemChatEvent(config.onMessageTrigger, EventType.PLAYER_MESSAGE, message);*/
     }
 }
