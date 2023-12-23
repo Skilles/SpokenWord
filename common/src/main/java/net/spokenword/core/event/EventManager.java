@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class EventManager {
 
-    private static final Map<EventType, List<EventListener>> listeners = new HashMap<>();
-    private static final Map<EventType, EventTransformerFactory<?>> eventTransformerFactories = new HashMap<>();
+    private final Map<EventType, List<EventListener>> listeners = new HashMap<>();
+    private final Map<EventType, EventTransformerFactory<?>> eventTransformerFactories = new HashMap<>();
 
     private static final EventTransformerFactory<EventContext<Object>> defaultTransformerFactory = EventTransformer.createBuilder().build();
 
@@ -26,7 +26,7 @@ public class EventManager {
         listeners.get(type).remove(listener);
     }
 
-    public <T extends EventContext<?>> void dispatchEvent(EventType type, T context) {
+    public <T extends EventContext<TValue>, TValue> void dispatchEvent(EventType type, T context) {
         SpokenWord.getLogger().info("Dispatching event " + type.name());
         if (!SpokenWord.getConfig().globalEnabled || !checkIpFilter()) {
             SpokenWord.getLogger().info("Event " + type.name() + " was cancelled by globalEnabled or ipFilter");

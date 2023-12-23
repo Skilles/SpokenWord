@@ -1,21 +1,28 @@
 package net.spokenword.core.behavior;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
+import net.spokenword.SpokenWord;
+import net.spokenword.core.event.EventType;
+import net.spokenword.core.event.context.ChatEventContext;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class BehaviorUtil {
 
-    public static void sendChatMessage(String message, @Nullable Player player) {
-        if (player == null) {
-            player = Minecraft.getInstance().player;
-        }
-
-        if (message.startsWith("/")) {
-            ((LocalPlayer) player).connection.sendCommand(message.substring(1));
-        } else {
-            ((LocalPlayer) player).connection.sendChat(message.replaceAll("\"", ""));
+    public static void handleSystemChatEvent(List<String> triggers, EventType eventType, String chatMessage) {
+        for (var trigger : triggers) {
+            var triggerPattern = Pattern.compile(trigger);
+            var matcher = triggerPattern.matcher(chatMessage);
+            if (matcher.find()) {
+                var playerName = matcher.group("name");
+                var message = matcher.group("msg");
+                if (playerName == null || playerName.isEmpty() || message == null || message.isEmpty()) {
+                    SpokenWord.getLogger().warn("Invalid trigger pattern '%s' for event %s".formatted(trigger, eventType));
+                    return;
+                }
+                SpokenWord.getEventManager().dispatchEvent(eventType, new ChatEventContext(message, playerName));
+                return;
+            }
         }
     }
 }
