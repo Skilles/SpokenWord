@@ -64,7 +64,7 @@ public class YaclMissingScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, i, j, f);
         int titleX = this.width / 2 - this.font.width(this.title) / 2;
         guiGraphics.drawString(this.font, this.title, titleX, heightOffset, 16777215);
         this.content.renderCentered(guiGraphics, (int) (this.width * 0.5), (int) (heightOffset + LINE_HEIGHT * 1.5), LINE_HEIGHT, 16777215);
