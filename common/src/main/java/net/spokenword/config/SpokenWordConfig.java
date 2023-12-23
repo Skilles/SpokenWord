@@ -276,11 +276,11 @@ public class SpokenWordConfig {
     @CustomName(SpokenWord.MOD_ID + ".config.onChatFilter")
     public List<String> onChatFilter = List.of("%self%");
 
-    @AutoGen(category = ADVANCED_CATEGORY)
+    /*@AutoGen(category = ADVANCED_CATEGORY)
     @SerialEntry
     @ListGroup(controllerFactory = StringListGroup.class, valueFactory = StringListGroup.class, addEntriesToBottom = true)
     @CustomName(SpokenWord.MOD_ID + ".config.onChatTrigger")
-    public List<String> onChatTrigger = List.of();
+    public List<String> onChatTrigger = List.of();*/
 
     @AutoGen(category = TOGGLES_CATEGORY, group = CHAT_GROUP)
     @SerialEntry
